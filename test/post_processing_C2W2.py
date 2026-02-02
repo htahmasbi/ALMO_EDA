@@ -49,8 +49,8 @@ def data_loader(base_path, n_snapshots, n_samples, n_features):
     total_size = n_snapshots*n_samples 
     # Load the dataset
     # select some points randomly for training
-    idx_rnd = np.random.randint(total_size, size=total_size)
-    D_numpy = features_allo_reshaped[idx_rnd, :] #[:, 1, :] # O center
+    #idx_rnd = np.random.randint(total_size, size=total_size)
+    D_numpy = features_allo_reshaped[:] #[idx_rnd, :] #[:, 1, :] # O center
     n_samples, n_features = D_numpy.shape
     print(D_numpy.shape)
 
