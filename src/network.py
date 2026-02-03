@@ -42,3 +42,16 @@ class FFNet(nn.Module):
         - Tensor: Output tensor of shape (batch_size, output_size).
         """
         return self.model(x)
+
+class CustomLoss(nn.Module):
+    def __init__(self):
+        super(CustomLoss, self).__init__()
+
+    def forward(self, output, target):
+        mse = torch.mean((output - target) ** 2)
+        
+        # Compute variation of energy (assuming it's std of target)
+        variation_of_energy = torch.var(target) + 1e-8  # Avoid division by zero
+        
+        loss = mse / variation_of_energy
+        return loss
