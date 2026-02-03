@@ -1,0 +1,17 @@
+data:
+  n_snapshot: 3000
+  n_samples: 125
+  n_features: 952
+  output_type: "donor"
+  num_outputs: 2
+
+model:
+  hidden_sizes: [50, 50]
+  activation: "Tanh"
+  dropout: 0.1
+
+training:
+  epochs: 500
+  lr: 0.0001
+  batch_size: 128
+  weight_decay: 0.001
