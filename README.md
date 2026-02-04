@@ -6,7 +6,7 @@ This repository contains a PyTorch-based neural network designed to predict elec
 .
 ├── configs/
 │   └── base_config.yaml       # Hyperparameters & model settings
-├── data/                      # Raw .npy and .lowest files (git-ignored)
+├── data/                      # Raw .npy files (git-ignored)
 ├── models/                    # Saved .pt checkpoints
 ├── src/                       # Source code
 │   ├── __init__.py            # Makes src a Python package
