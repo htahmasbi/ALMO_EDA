@@ -1,6 +1,8 @@
-Python packages:
-ase
+torch>=2.0.0
 numpy
+scikit-learn
+matplotlib
 dscribe
-pytorch
-sklearn
+ase
+pyyaml
+rdkit
