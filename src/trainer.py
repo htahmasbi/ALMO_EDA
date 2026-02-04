@@ -17,6 +17,9 @@ def train_model(model, optimizer, train_loader, val_loader, criterion, device, n
             optimizer.step()
             train_loss += loss.item()
 
+        train_loss /= len(train_loader)
+        train_losses.append(train_loss)
+
         # Validation logic...
         model.eval()
         valid_loss = 0.0
@@ -26,15 +29,19 @@ def train_model(model, optimizer, train_loader, val_loader, criterion, device, n
                 valid_loss += criterion(model(features), targets).item()
         
         valid_loss /= len(val_loader)
+        # Update learning rate based on validation loss
         scheduler.step(valid_loss)
 
         if valid_loss < best_valid_loss:
             best_valid_loss = valid_loss
             torch.save(model.state_dict(), "models/best_model.pt")
+            # Reset counter if improvement 
             i_worse = 0
+        # Only increment if early stopping is enabled and loss didn't improve
         elif early_stopping:
             i_worse += 1
             if i_worse >= patience:
                 break
         
-        print(f"Epoch {epoch+1}: Val Loss {valid_loss:.4f}")
+        #print(f"Epoch {epoch+1}: Val Loss {valid_loss:.4f}")
+        print(f"Epoch {epoch+1}: Train Loss: {train_loss:.4f}, Valid Loss: {valid_loss:.4f}")
