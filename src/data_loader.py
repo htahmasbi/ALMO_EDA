@@ -35,13 +35,6 @@ def load_energy_data(file_path):
         print(f"Error reading energy file: {file_path}, Error: {e}")
         return None
 
-def load_features(file_path):
-    try:
-        return np.load(file_path)
-    except Exception as e:
-        print(f"Error loading {file_path}: {e}")
-        return None
-
 def data_loader(n_snapshot, n_samples, n_features, output_type="donor", num_outputs=1,
                 data_dir="/home/tahmas41/work/ALMO_nn/Bulk_water_ALMO_karhan/data/",
                 start_index=90000, end_index=100000, step=2,
