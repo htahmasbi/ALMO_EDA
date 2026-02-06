@@ -5,20 +5,27 @@ This repository contains a PyTorch-based neural network designed to predict elec
 
 ```text
 .
-├── configs/
-│   └── base_config.yaml       # Hyperparameters & model settings
-├── data/                      # Raw .npy files (git-ignored)
-├── models/                    # Saved .pt checkpoints
-├── src/                       # Source code
-│   ├── __init__.py            # Makes src a Python package
-│   ├── data_loader.py         # Data processing & Dataset class
-│   ├── network.py             # PyTorch FFNet architecture
-│   ├── loss.py                # Physics-informed Loss functions
-│   └── trainer.py             # Training & Validation loops
-├── main.py                    # Main entry point
-├── requirements.txt           # Dependency list
-└── README.md                  # Project documentation
+├── configs
+│   └── base_config.yaml
+├── data
+│   └── soap_descriptor.py
+├── examples
+│   ├── post_processing_C2W2.py
+│   └── post_processing.py
+├── main.py
+├── models
+│   └── best_model_donor.pt
+├── README.md
+├── requirements.txt
+├── run_train.py
+└── src
+    ├── data_loader.py
+    ├── __init__.py
+    ├── loss.py
+    ├── network.py
+    └── trainer.py
 ```
+
 ## Getting Started
 
 1. Install dependencies:
