@@ -9,7 +9,7 @@ This repository contains a PyTorch-based neural network designed to predict elec
 │   └── base_config.yaml
 ├── data
 │   └── soap_descriptor.py
-├── examples
+├── tests
 │   ├── post_processing_C2W2.py
 │   └── post_processing.py
 ├── main.py

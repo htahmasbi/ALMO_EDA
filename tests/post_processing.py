@@ -13,9 +13,6 @@ from sklearn.metrics import mean_squared_error
 from multiprocessing import Pool
 from matplotlib import rcParams
 
-au2ev = 2.72113838565563E+01 # Hartree to eV
-au2kjpmol = 2.62549961709828E+03 # Hartree
-
 def load_features(file_path):
     return np.load(file_path)
 
@@ -48,8 +45,6 @@ def data_loader(base_path, n_snapshot, n_samples, n_features, output_type="donor
     data_out_log_accep = np.log(-data_out_accep.reshape(-1, 5))
     data_out_log_donor = np.log(-data_out_donor.reshape(-1, 5))
     
-    # Select random points for correlation plot
-    #idx_rnd = np.random.randint(len(features_allo_reshaped), num_train_samples)
     D_numpy = features_allo_reshaped[:]
 
     # Select output type
@@ -256,8 +251,6 @@ def main_eval(base_path):
 
     E_numpy_true, E_whole_pred = correlation_plot(E_numpy, D_numpy, model)
 
-    #plot_energy_histogram(E_whole_pred, num_bins=100, range_xax=(-30, 0), file_name="Epred_hist_donor.png")
-    #plot_energy_histogram(E_numpy_true, num_bins=100, range_xax=(-30, 0), file_name="Etrue_hist_donor.png")
     plot_energy_histogram(E_numpy_true, E_whole_pred, num_bins=100, range_xax=(-30, 0), file_name="data_hist_true_pred.pdf")
 
 if __name__ == "__main__":
