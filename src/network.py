@@ -11,7 +11,7 @@ class FFNet(nn.Module):
         - input_size (int): Number of input features.
         - hidden_layers (list of int): List specifying the size of each hidden layer.
         - output_size (int): Number of output features.
-        - activation_func (nn.Module): Activation function class (e.g., nn.ReLU).
+        - activation (nn.Module): Activation function class (e.g., nn.ReLU).
         - dropout_prob (float): Dropout probability (default 0.2).
         """
         super().__init__()

@@ -35,7 +35,7 @@ def run_test_case(model_path, config):
         input_size=config['n_features'],
         hidden_layers=config['hidden_sizes'],
         output_size=config['output_size'],
-        activation_func=torch.nn.Tanh # Matches your FFNet implementation
+        activation=torch.nn.Tanh # Matches your FFNet implementation
     ).to(device)
     
     # Load the best model weights
