@@ -8,7 +8,7 @@ from src.data_loader import data_loader
 from src.logger import get_logger  # New centralized logger
 
 # Initialize logger for this specific module
-logger = get_logger("Evaluation")
+logger = get_logger("Evaluation-CI test")
 
 def run_test_case(model_path, config):
     logger.info(f"Initializing evaluation for: {model_path}")
@@ -55,22 +55,27 @@ def run_test_case(model_path, config):
     mae = mean_absolute_error(y_true_mh, y_pred_mh)
     rmse = np.sqrt(mean_squared_error(y_true_mh, y_pred_mh))
 
-    logger.info("✅ Evaluation Results:")
+    logger.info("Evaluation Results:")
     logger.info(f"MAE:  {mae:.4f} mHartree")
     logger.info(f"RMSE: {rmse:.4f} mHartree")
     
     return mae, rmse
 
 if __name__ == "__main__":
-    # Settings pulled from your main_train parameters
+
+    # Check if we are running on GitHub Actions
+    is_ci = os.environ.get('GITHUB_ACTIONS') == 'true'
+    
     test_config = {
-        'n_snapshot': 2000,
+        'n_snapshot': 5 if is_ci else 2000, # Tiny sample for CI
         'n_samples': 125,
         'n_features': 952,
         'hidden_sizes': [50, 50],
         'output_size': 2,
-        'start_index': 96000,
-        'end_index': 100000,
-        'num_test_samples': 50000
+        'start_index': 90000,
+        'end_index': 90010 if is_ci else 94000,
+        'num_test_samples': 100 if is_ci else 50000
     }
-    run_test_case("best_model_donor.pt", test_config)
+    
+    logger.info(f"Running in CI mode: {is_ci}")
+    run_test_case("./best_model_donor.pt", test_config)
