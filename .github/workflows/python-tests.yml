@@ -26,7 +26,7 @@ jobs:
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
     
     - name: List files for debugging
-      run: ls -R  # This will print every file and folder in the runner's log
+      run: ls -r  # -R :This will print every file and folder in the runner's log
 
     - name: Run Evaluation Test Case
       run: |

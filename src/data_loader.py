@@ -36,7 +36,7 @@ def load_energy_data(file_path):
         return None
 
 def data_loader(n_snapshot, n_samples, n_features, output_type="donor", num_outputs=1,
-                data_dir="../data/Bulk_water_ALMO_karhan/",
+                data_dir="./data/Bulk_water_ALMO_karhan/",
                 start_index=90000, end_index=100000, step=2,
                 num_train_samples=500000, test_size=0.2, random_seed=123,
                 use_multiprocessing=True):

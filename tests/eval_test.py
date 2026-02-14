@@ -75,8 +75,8 @@ if __name__ == "__main__":
         'output_size': 2,
         'start_index': 90000,
         'end_index': 90010 if is_ci else 94000,
-        'num_test_samples': 100 if is_ci else 50000
+        'num_test_samples': 625 if is_ci else 250000
     }
     
     logger.info(f"Running in CI mode: {is_ci}")
-    run_test_case("./best_model_donor.pt", test_config)
+    run_test_case("./models/best_model_donor.pt", test_config)
