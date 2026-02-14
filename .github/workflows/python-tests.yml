@@ -30,6 +30,7 @@ jobs:
 
     - name: Run Evaluation Test Case
       run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd)
         # We run the evaluation script as a test
         # We use a try-except or check for exit codes
         python tests/eval_test.py
