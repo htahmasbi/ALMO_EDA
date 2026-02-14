@@ -108,10 +108,10 @@ if __name__ == "__main__":
     systems = ["Zn2W2", "Zn2W5", "Zn2W7", "Cu2W2", "Cu2W5"]
     samples = [72, 183, 258, 72, 174]
 
-    analyzer = SystemAnalyzer(model_path="best_model_donor.pt", config=config)
+    analyzer = SystemAnalyzer(model_path="../models/best_model_donor.pt", config=config)
 
     for sys_name, n_s in zip(systems, samples):
-        path = f"/home/tahmas41/work/ALMO_nn/Bulk_water_ALMO_karhan/data_CPO-27/{sys_name}"
+        path = f"../data/data_CPO-27/{sys_name}"
         E_pred = analyzer.predict_system(path, n_snapshots=1000, n_samples=n_s)
         
         if E_pred is not None:

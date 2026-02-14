@@ -86,7 +86,7 @@ if __name__ == "__main__":
     # 2. Load the test data (Indices not used in training)
     # Using your existing data_loader from src
     E_tensor, D_tensor = data_loader(
-        base_path="/home/tahmas41/work/ALMO_nn/Bulk_water_ALMO_karhan/data",
+        base_path="../data/Bulk_water_ALMO_karhan",
         n_snapshot=2000,
         n_samples=125,
         n_features=952,
@@ -95,7 +95,7 @@ if __name__ == "__main__":
     )
 
     # 3. Initialize and Run
-    tester = ModelEvaluator(eval_config, model_path="best_model_donor.pt")
+    tester = ModelEvaluator(eval_config, model_path="../models/best_model_donor.pt")
     y_true, y_pred = tester.get_predictions(D_tensor, E_tensor)
     tester.calculate_metrics(y_true, y_pred)
     tester.plot_correlation(y_true, y_pred)
