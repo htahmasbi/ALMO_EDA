@@ -35,7 +35,7 @@ def load_energy_data(file_path):
         print(f"Error reading energy file: {file_path}, Error: {e}")
         return None
 
-def data_loader(n_snapshot, n_samples, n_features, output_type="donor", num_outputs=1,
+def data_loader(n_snapshot, n_samples, n_features, output_type="donor", n_outputs=1,
                 data_dir="./data/Bulk_water_ALMO_karhan/",
                 start_index=90000, end_index=100000, step=2,
                 num_train_samples=500000, test_size=0.2, random_seed=123,
@@ -48,7 +48,7 @@ def data_loader(n_snapshot, n_samples, n_features, output_type="donor", num_outp
     - n_samples (int): Number of samples per snapshot.
     - n_features (int): Number of feature dimensions.
     - output_type (str): Choose "donor", "acceptor", or "both".
-    - num_outputs (int): Number of outputs to return (1 or 2), taken from first or first two energy columns.
+    - n_outputs (int): Number of outputs to return (1 or 2), taken from first or first two energy columns.
     - data_dir (str): Base directory for data files.
     - start_index (int): Start index for file names.
     - end_index (int): End index for file names.
@@ -66,7 +66,7 @@ def data_loader(n_snapshot, n_samples, n_features, output_type="donor", num_outp
     - E_valid (Tensor): Validation energy values.
     """
     
-    assert num_outputs in [1, 2], "num_outputs must be 1 or 2 (selects first or first two energy values)."
+    assert n_outputs in [1, 2], "n_outputs must be 1 or 2 (selects first or first two energy values)."
 
     # Prepare file indices
     file_indices = range(start_index, end_index, step)
@@ -143,13 +143,13 @@ def data_loader(n_snapshot, n_samples, n_features, output_type="donor", num_outp
 
     # Select output type
     if output_type == "donor":
-        E_numpy = data_out_log_donor[idx_rnd, :num_outputs]  # First 1 or 2 columns
+        E_numpy = data_out_log_donor[idx_rnd, :n_outputs]  # First 1 or 2 columns
     elif output_type == "acceptor":
-        E_numpy = data_out_log_accep[idx_rnd, :num_outputs]  # First 1 or 2 columns
+        E_numpy = data_out_log_accep[idx_rnd, :n_outputs]  # First 1 or 2 columns
     elif output_type == "both":
         E_numpy = np.concatenate([
-            data_out_log_donor[idx_rnd, :num_outputs],  # First 1 or 2 columns
-            data_out_log_accep[idx_rnd, :num_outputs]   # First 1 or 2 columns
+            data_out_log_donor[idx_rnd, :n_outputs],  # First 1 or 2 columns
+            data_out_log_accep[idx_rnd, :n_outputs]   # First 1 or 2 columns
         ], axis=1)
     else:
         raise ValueError("Invalid output_type! Choose 'donor', 'acceptor', or 'both'.")
