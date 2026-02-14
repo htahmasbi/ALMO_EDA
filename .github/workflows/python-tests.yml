@@ -24,9 +24,12 @@ jobs:
         python -m pip install --upgrade pip
         # Install the libraries from your requirements.txt
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    
+    - name: List files for debugging
+      run: ls -R  # This will print every file and folder in the runner's log
 
     - name: Run Evaluation Test Case
       run: |
         # We run the evaluation script as a test
         # We use a try-except or check for exit codes
-        python eval_test.py
+        python tests/eval_test.py
