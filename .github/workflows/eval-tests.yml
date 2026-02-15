@@ -1,4 +1,4 @@
-name: Molecular NN CI
+name: ALMO EDA NN evaluation test CI
 
 on:
   push:
