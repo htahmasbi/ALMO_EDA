@@ -38,7 +38,7 @@ def load_energy_data(file_path):
 def data_loader(n_snapshot, n_samples, n_features, output_type="donor", n_outputs=1,
                 data_dir="./data/Bulk_water_ALMO_karhan/",
                 start_index=90000, end_index=100000, step=2,
-                num_train_samples=500000, test_size=0.2, random_seed=123,
+                num_train_samples=500000, valid_size=0.2, random_seed=123,
                 use_multiprocessing=True):
     """
     Load molecular features and energy values, preprocess data, and return train/validation tensors.
@@ -54,7 +54,7 @@ def data_loader(n_snapshot, n_samples, n_features, output_type="donor", n_output
     - end_index (int): End index for file names.
     - step (int): Step size for indexing (default: 2).
     - num_train_samples (int): Number of training samples.
-    - test_size (float): Fraction of data to use for validation.
+    - valid_size (float): Fraction of data to use for validation.
     - random_seed (int): Random seed for reproducibility.
     - use_multiprocessing (bool): Use multiprocessing for faster file loading.
 
@@ -159,7 +159,7 @@ def data_loader(n_snapshot, n_samples, n_features, output_type="donor", n_output
     # Standardize Data (Properly)
     # ==========================
     D_train, D_valid, E_train, E_valid = train_test_split(
-        D_numpy, E_numpy, test_size=test_size, random_state=random_seed
+        D_numpy, E_numpy, valid_size=valid_size, random_state=random_seed
     )
 
     scaler = StandardScaler().fit(D_train)
