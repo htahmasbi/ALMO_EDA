@@ -6,7 +6,8 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error
 # Professional Imports
 from src.network import FFNet 
 from src.data_loader import data_loader 
-from src.logger import get_logger  # New centralized logger
+from src.visualization import plot_energy_histogram
+from src.logger import get_logger
 
 # Initialize logger for this specific module
 logger = get_logger("Evaluation-CI test")
@@ -52,6 +53,8 @@ def run_test_case(model_path, config):
     # Reversing the log(-data) transformation used in data_loader
     y_true_mh = -np.exp(E_test)
     y_pred_mh = -np.exp(y_pred_log)
+
+    plot_energy_histogram(y_true_mh, y_pred_mh, file_name="ci_test_histogram.pdf")
 
     # 5. Metrics & Logging Results
     mae = mean_absolute_error(y_true_mh, y_pred_mh)

@@ -41,3 +41,10 @@ jobs:
       with:
         name: model-evaluation-logs
         path: logs/          # This matches the folder created by src/logger.py
+
+    - name: Upload Plots
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: evaluation-plots
+        path: "*.pdf"  # This will grab energy_histogram.pdf and any others
