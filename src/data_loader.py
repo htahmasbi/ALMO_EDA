@@ -159,7 +159,7 @@ def data_loader(n_snapshot, n_samples, n_features, output_type="donor", n_output
     # Standardize Data (Properly)
     # ==========================
     D_train, D_valid, E_train, E_valid = train_test_split(
-        D_numpy, E_numpy, valid_size=valid_size, random_state=random_seed
+        D_numpy, E_numpy, test_size=valid_size, random_state=random_seed
     )
 
     scaler = StandardScaler().fit(D_train)
