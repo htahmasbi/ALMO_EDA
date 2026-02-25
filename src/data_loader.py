@@ -5,6 +5,7 @@ from torch.utils.data import Dataset
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from multiprocessing import Pool
+from src.utils import time_research_task
 
 class AtomisticDataset(Dataset):
     def __init__(self, features, energies):
@@ -35,6 +36,7 @@ def load_energy_data(file_path):
         print(f"Error reading energy file: {file_path}, Error: {e}")
         return None
 
+@time_research_task
 def data_loader(n_snapshot, n_samples, n_features, output_type="donor", n_outputs=1,
                 data_dir="./data/Bulk_water_ALMO_karhan/",
                 start_index=90000, end_index=100000, step=2,
