@@ -17,10 +17,11 @@ def run_test_case(model_path, config):
 
     # 1. Load Data using your existing data_loader logic
     try:
-        _, _, _, D_test, _, E_test = data_loader(
+        D_test, E_test = data_loader(
             n_snapshot=config['n_snapshot'],
             n_samples=config['n_samples'],
             n_features=config['n_features'],
+            mode=config['mode_typ'],
             n_outputs=config['output_size'],
             start_index=config['start_index'],
             end_index=config['end_index'],
@@ -75,6 +76,7 @@ if __name__ == "__main__":
         'n_snapshot': 5 if is_ci else 2000, # Tiny sample for CI
         'n_samples': 125,
         'n_features': 952,
+        'mode_typ': 'eval',
         'hidden_sizes': [50, 50],
         'output_size': 2,
         'start_index': 90000,

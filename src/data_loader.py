@@ -37,12 +37,20 @@ def load_energy_data(file_path):
         return None
 
 @time_research_task
-def data_loader(n_snapshot, n_samples, n_features, output_type="donor", n_outputs=1,
+def data_loader(n_snapshot, n_samples, n_features, mode="train", #scalar=None, 
+                output_type="donor", n_outputs=1,
                 data_dir="./data/Bulk_water_ALMO_karhan/",
                 start_index=90000, end_index=100000, step=2,
                 num_train_samples=500000, valid_size=0.2, random_seed=123,
                 use_multiprocessing=True):
     """
+    Unified loader for both Training and Post-Processing.
+    
+    Args:
+        mode (str): "train" returns (D_train, D_valid, E_train, E_valid)
+                    "eval" returns (D_tensor, E_tensor)
+        scaler: If mode="eval", you MUST pass the scaler fitted during training.
+
     Load molecular features and energy values, preprocess data, and return train/validation tensors.
 
     Parameters:
@@ -138,36 +146,65 @@ def data_loader(n_snapshot, n_samples, n_features, output_type="donor", n_output
     # ==========================
     # Select Training Data
     # ==========================
-    np.random.seed(random_seed)
-    idx_rnd = np.random.choice(len(features_allo_reshaped), num_train_samples, replace=False)
+    
+    if mode == "train":
+        num_samples = kwargs.get('num_train_samples', 300000)
+        np.random.seed(random_seed)
+        idx = np.random.choice(len(features_allo_reshaped), num_samples, replace=False)
+        D_raw = features_allo_reshaped[idx]
 
-    D_numpy = features_allo_reshaped[idx_rnd, :]
+        if output_type == "donor":
+            E_raw = data_out_log_donor[idx, :kwargs.get('num_outputs', 2)]
+        elif output_type == "acceptor":
+            E_raw = data_out_log_accep[idx, :kwargs.get('num_outputs', 2)]
+        elif output_type == "both":
+            E_raw = np.concatenate([
+                data_out_log_donor[idx, :kwargs.get('num_outputs', 2)],
+                data_out_log_accep[idx, :kwargs.get('num_outputs', 2)]
+            ] , axis=1 )
+        else:
+            raise ValueError("Invalid output_type! Choose 'donor', 'acceptor', or 'both'.")
 
-    # Select output type
-    if output_type == "donor":
-        E_numpy = data_out_log_donor[idx_rnd, :n_outputs]  # First 1 or 2 columns
-    elif output_type == "acceptor":
-        E_numpy = data_out_log_accep[idx_rnd, :n_outputs]  # First 1 or 2 columns
-    elif output_type == "both":
-        E_numpy = np.concatenate([
-            data_out_log_donor[idx_rnd, :n_outputs],  # First 1 or 2 columns
-            data_out_log_accep[idx_rnd, :n_outputs]   # First 1 or 2 columns
-        ], axis=1)
-    else:
-        raise ValueError("Invalid output_type! Choose 'donor', 'acceptor', or 'both'.")
+        #var_energy_train = E_raw.var()
 
-    var_energy_train = E_numpy.var()
-    # ==========================
-    # Standardize Data (Properly)
-    # ==========================
-    D_train, D_valid, E_train, E_valid = train_test_split(
-        D_numpy, E_numpy, test_size=valid_size, random_state=random_seed
-    )
+        # Split
+        D_tr_raw, D_va_raw, E_train, E_valid = train_test_split(
+            D_raw, E_raw, test_size=kwargs.get('valid_size', 0.2), random_state=random_seed
+        )
 
-    scaler = StandardScaler().fit(D_train)
-    D_train = scaler.transform(D_train)
-    D_valid = scaler.transform(D_valid)
+        print(f"Shapes -> D_train: {D_train.shape}, D_valid: {D_valid.shape}, E_train: {E_train.shape}, E_valid: {E_valid.shape}")
 
-    print(f"Shapes -> D_train: {D_train.shape}, D_valid: {D_valid.shape}, E_train: {E_train.shape}, E_valid: {E_valid.shape}")
+        # FIT SCALER HERE
+        scaler = StandardScaler().fit(D_tr_raw)
+        D_train = scaler.transform(D_tr_raw)
+        D_valid = scaler.transform(D_va_raw)
 
-    return n_features, var_energy_train, D_train, D_valid, E_train, E_valid
+        return torch.Tensor(D_train), torch.Tensor(D_valid), \
+               torch.Tensor(E_train), torch.Tensor(E_valid), scaler
+
+    elif mode == "eval":
+        #if scaler is None:
+        #    raise ValueError("You must provide the training scaler for evaluation!")
+
+        ## Transform using the SAVED scaler, do NOT .fit()
+        #D_eval = scaler.transform(features_allo_reshaped)
+        #E_eval = data_out_log_donor[:, :kwargs.get('num_outputs', 2)]
+        # Standardize input data
+      
+        scaler = StandardScaler().fit(features_allo_reshaped)
+        D_eval = scaler.transform(features_allo_reshaped)
+        if output_type == "donor":
+            E_eval = data_out_log_donor[:, :kwargs.get('num_outputs', 2)]
+        elif output_type == "acceptor":
+            E_eval = data_out_log_accep[:, :kwargs.get('num_outputs', 2)]
+        elif output_type == "both":
+            E_eval = np.concatenate([
+                data_out_log_donor[:, :kwargs.get('num_outputs', 2)],
+                data_out_log_accep[:, :kwargs.get('num_outputs', 2)]
+            ] , axis=1 )
+        else:
+            raise ValueError("Invalid output_type! Choose 'donor', 'acceptor', or 'both'.")
+
+        print(D_eval.shape, E_eval.shape)
+
+        return torch.Tensor(D_eval), torch.Tensor(E_eval)
