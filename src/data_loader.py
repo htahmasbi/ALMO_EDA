@@ -38,11 +38,11 @@ def load_energy_data(file_path):
 
 @time_research_task
 def data_loader(n_snapshot, n_samples, n_features, mode="train", #scalar=None, 
-                output_type="donor",
+                output_type="donor", n_outputs = 2,
                 data_dir="./data/Bulk_water_ALMO_karhan/",
                 start_index=90000, end_index=100000, step=2,
-                random_seed=123,
-                use_multiprocessing=True, **kwargs):
+                random_seed=123, valid_size=0.2, num_train_samples = 2000,
+                use_multiprocessing=True):
     """
     Unified loader for both Training and Post-Processing.
     
@@ -148,19 +148,19 @@ def data_loader(n_snapshot, n_samples, n_features, mode="train", #scalar=None,
     # ==========================
     
     if mode == "train":
-        num_samples = kwargs.get('num_train_samples', 300000)
+        num_samples = num_train_samples
         np.random.seed(random_seed)
         idx = np.random.choice(len(features_allo_reshaped), num_samples, replace=False)
         D_raw = features_allo_reshaped[idx]
 
         if output_type == "donor":
-            E_raw = data_out_log_donor[idx, :kwargs.get('n_outputs', 2)]
+            E_raw = data_out_log_donor[idx, :n_outputs]
         elif output_type == "acceptor":
-            E_raw = data_out_log_accep[idx, :kwargs.get('n_outputs', 2)]
+            E_raw = data_out_log_accep[idx, :n_outputs]
         elif output_type == "both":
             E_raw = np.concatenate([
-                data_out_log_donor[idx, :kwargs.get('n_outputs', 2)],
-                data_out_log_accep[idx, :kwargs.get('n_outputs', 2)]
+                data_out_log_donor[idx, :n_outputs],
+                data_out_log_accep[idx, :n_outputs]
             ] , axis=1 )
         else:
             raise ValueError("Invalid output_type! Choose 'donor', 'acceptor', or 'both'.")
@@ -169,7 +169,7 @@ def data_loader(n_snapshot, n_samples, n_features, mode="train", #scalar=None,
 
         # Split
         D_tr_raw, D_va_raw, E_train, E_valid = train_test_split(
-            D_raw, E_raw, test_size=kwargs.get('valid_size', 0.2), random_state=random_seed
+            D_raw, E_raw, test_size=valid_size, random_state=random_seed
         )
 
         print(f"Shapes -> D_train: {D_train.shape}, D_valid: {D_valid.shape}, E_train: {E_train.shape}, E_valid: {E_valid.shape}")
@@ -194,13 +194,13 @@ def data_loader(n_snapshot, n_samples, n_features, mode="train", #scalar=None,
         scaler = StandardScaler().fit(features_allo_reshaped)
         D_eval = scaler.transform(features_allo_reshaped)
         if output_type == "donor":
-            E_eval = data_out_log_donor[:, :kwargs.get('n_outputs', 2)]
+            E_eval = data_out_log_donor[:, :n_outputs]
         elif output_type == "acceptor":
-            E_eval = data_out_log_accep[:, :kwargs.get('n_outputs', 2)]
+            E_eval = data_out_log_accep[:, :n_outputs]
         elif output_type == "both":
             E_eval = np.concatenate([
-                data_out_log_donor[:, :kwargs.get('n_outputs', 2)],
-                data_out_log_accep[:, :kwargs.get('n_outputs', 2)]
+                data_out_log_donor[:, :n_outputs],
+                data_out_log_accep[:, :n_outputs]
             ] , axis=1 )
         else:
             raise ValueError("Invalid output_type! Choose 'donor', 'acceptor', or 'both'.")
