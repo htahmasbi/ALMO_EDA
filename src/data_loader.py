@@ -154,13 +154,13 @@ def data_loader(n_snapshot, n_samples, n_features, mode="train", #scalar=None,
         D_raw = features_allo_reshaped[idx]
 
         if output_type == "donor":
-            E_raw = data_out_log_donor[idx, :kwargs.get('num_outputs', 2)]
+            E_raw = data_out_log_donor[idx, :kwargs.get('n_outputs', 2)]
         elif output_type == "acceptor":
-            E_raw = data_out_log_accep[idx, :kwargs.get('num_outputs', 2)]
+            E_raw = data_out_log_accep[idx, :kwargs.get('n_outputs', 2)]
         elif output_type == "both":
             E_raw = np.concatenate([
-                data_out_log_donor[idx, :kwargs.get('num_outputs', 2)],
-                data_out_log_accep[idx, :kwargs.get('num_outputs', 2)]
+                data_out_log_donor[idx, :kwargs.get('n_outputs', 2)],
+                data_out_log_accep[idx, :kwargs.get('n_outputs', 2)]
             ] , axis=1 )
         else:
             raise ValueError("Invalid output_type! Choose 'donor', 'acceptor', or 'both'.")
@@ -188,19 +188,19 @@ def data_loader(n_snapshot, n_samples, n_features, mode="train", #scalar=None,
 
         ## Transform using the SAVED scaler, do NOT .fit()
         #D_eval = scaler.transform(features_allo_reshaped)
-        #E_eval = data_out_log_donor[:, :kwargs.get('num_outputs', 2)]
+        #E_eval = data_out_log_donor[:, :kwargs.get('n_outputs', 2)]
         # Standardize input data
       
         scaler = StandardScaler().fit(features_allo_reshaped)
         D_eval = scaler.transform(features_allo_reshaped)
         if output_type == "donor":
-            E_eval = data_out_log_donor[:, :kwargs.get('num_outputs', 2)]
+            E_eval = data_out_log_donor[:, :kwargs.get('n_outputs', 2)]
         elif output_type == "acceptor":
-            E_eval = data_out_log_accep[:, :kwargs.get('num_outputs', 2)]
+            E_eval = data_out_log_accep[:, :kwargs.get('n_outputs', 2)]
         elif output_type == "both":
             E_eval = np.concatenate([
-                data_out_log_donor[:, :kwargs.get('num_outputs', 2)],
-                data_out_log_accep[:, :kwargs.get('num_outputs', 2)]
+                data_out_log_donor[:, :kwargs.get('n_outputs', 2)],
+                data_out_log_accep[:, :kwargs.get('n_outputs', 2)]
             ] , axis=1 )
         else:
             raise ValueError("Invalid output_type! Choose 'donor', 'acceptor', or 'both'.")
