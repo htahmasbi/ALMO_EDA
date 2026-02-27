@@ -38,11 +38,11 @@ def load_energy_data(file_path):
 
 @time_research_task
 def data_loader(n_snapshot, n_samples, n_features, mode="train", #scalar=None, 
-                output_type="donor", n_outputs=1,
+                output_type="donor",
                 data_dir="./data/Bulk_water_ALMO_karhan/",
                 start_index=90000, end_index=100000, step=2,
-                num_train_samples=500000, valid_size=0.2, random_seed=123,
-                use_multiprocessing=True):
+                random_seed=123,
+                use_multiprocessing=True, **kwargs):
     """
     Unified loader for both Training and Post-Processing.
     

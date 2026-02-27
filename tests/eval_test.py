@@ -25,7 +25,8 @@ def run_test_case(model_path, config):
             n_outputs=config['output_size'],
             start_index=config['start_index'],
             end_index=config['end_index'],
-            num_train_samples=config['num_test_samples']
+            num_train_samples=config['num_test_samples'],
+            **kwargs
         )
         logger.info("Successfully loaded test dataset.")
     except Exception as e:
