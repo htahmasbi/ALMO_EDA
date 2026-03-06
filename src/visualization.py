@@ -4,12 +4,12 @@ from src.logger import get_logger
 
 logger = get_logger("Visualization")
 
-def plot_energy_histogram(y_true, y_pred, file_name="energy_histogram.pdf"):
+def plot_energy_histogram(y_true, y_pred, file_name="energy_histogram.pdf", num_bins = 100):
     """
     Plots a normalized histogram comparing DFT truth vs NN predictions.
     """
     colors = ["#d62728", "#1f77b4"]  # Red for 1st level, Blue for 2nd
-    num_bins = 100
+    #num_bins = 100
     range_xax = (-30, 0)
 
     fig, ax = plt.subplots(figsize=(8, 6))
@@ -34,7 +34,7 @@ def plot_energy_histogram(y_true, y_pred, file_name="energy_histogram.pdf"):
 
     ax.set_xlabel('Energy (mHartree)', fontsize=14)
     ax.set_ylabel('Normalized Frequency', fontsize=14)
-    ax.set_ylim(0, 0.10)
+    #ax.set_ylim(0, 0.10)
     ax.legend(loc='upper left', frameon=False)
     
     plt.tight_layout()
