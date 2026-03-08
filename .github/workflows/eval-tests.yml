@@ -2,9 +2,9 @@ name: ALMO EDA NN evaluation test CI
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "devel" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "devel" ]
 
 jobs:
   test:

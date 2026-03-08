@@ -37,9 +37,8 @@ def load_energy_data(file_path):
         return None
 
 @time_research_task
-def data_loader(n_snapshot, n_samples, n_features, mode="train", #scalar=None, 
+def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #scalar=None, 
                 output_type="donor", n_outputs = 2,
-                data_dir="./data/Bulk_water_ALMO_karhan/",
                 start_index=90000, end_index=100000, step=2,
                 random_seed=123, valid_size=0.2, num_train_samples = 2000,
                 use_multiprocessing=True):
@@ -59,7 +58,7 @@ def data_loader(n_snapshot, n_samples, n_features, mode="train", #scalar=None,
     - n_features (int): Number of feature dimensions.
     - output_type (str): Choose "donor", "acceptor", or "both".
     - n_outputs (int): Number of outputs to return (1 or 2), taken from first or first two energy columns.
-    - data_dir (str): Base directory for data files.
+    - base_path (str): Base directory for data files.
     - start_index (int): Start index for file names.
     - end_index (int): End index for file names.
     - step (int): Step size for indexing (default: 2).
@@ -85,7 +84,7 @@ def data_loader(n_snapshot, n_samples, n_features, mode="train", #scalar=None,
     # Load Features
     # ==========================
     features_allox = np.zeros((n_snapshot, n_samples, n_features))
-    file_paths = [os.path.join(data_dir, f"0{idx}/coord_soap_nmax8_lmax6_cut5.npy") for idx in file_indices]
+    file_paths = [os.path.join(base_path, f"0{idx}/coord_soap_nmax8_lmax6_cut5.npy") for idx in file_indices]
 
     if use_multiprocessing:
         with Pool() as pool:
@@ -107,8 +106,8 @@ def data_loader(n_snapshot, n_samples, n_features, mode="train", #scalar=None,
     # ==========================
     # Load Energy Data (Donor/Acceptor/Both)
     # ==========================
-    acceptor_paths = [os.path.join(data_dir, f"0{idx}/molecules.lowest.acceptor") for idx in file_indices]
-    donor_paths = [os.path.join(data_dir, f"0{idx}/molecules.lowest.donor") for idx in file_indices]
+    acceptor_paths = [os.path.join(base_path, f"0{idx}/molecules.lowest.acceptor") for idx in file_indices]
+    donor_paths = [os.path.join(base_path, f"0{idx}/molecules.lowest.donor") for idx in file_indices]
 
     if use_multiprocessing:
         with Pool() as pool:
