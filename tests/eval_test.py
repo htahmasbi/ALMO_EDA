@@ -56,7 +56,7 @@ def run_test_case(model_path, config):
     y_true_mh = -np.exp(E_test.numpy().flatten())
     y_pred_mh = -np.exp(y_pred_log.flatten())
 
-    plot_energy_histogram(y_true_mh, y_pred_mh, file_name="ci_test_histogram.pdf")
+    #plot_energy_histogram(y_true_mh, y_pred_mh, file_name="ci_test_histogram.pdf")
 
     # 5. Metrics & Logging Results
     mae = mean_absolute_error(y_true_mh, y_pred_mh)
