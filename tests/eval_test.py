@@ -18,6 +18,7 @@ def run_test_case(model_path, config):
     # 1. Load Data using your existing data_loader logic
     try:
         D_test, E_test = data_loader(
+            base_path=config['base_path'],
             n_snapshot=config['n_snapshot'],
             n_samples=config['n_samples'],
             n_features=config['n_features'],
@@ -47,15 +48,15 @@ def run_test_case(model_path, config):
 
     # 3. Inference
     with torch.no_grad():
-        X = torch.tensor(D_test, dtype=torch.float32).to(device)
-        y_pred_log = model(X).cpu().numpy()
+        #X = torch.tensor(D_test, dtype=torch.float32).to(device)
+        y_pred_log = model(D_test).cpu().numpy()
 
     # 4. Physical Unit Recovery
     # Reversing the log(-data) transformation used in data_loader
-    y_true_mh = -np.exp(E_test)
-    y_pred_mh = -np.exp(y_pred_log)
+    y_true_mh = -np.exp(E_test.numpy().flatten())
+    y_pred_mh = -np.exp(y_pred_log.flatten())
 
-    plot_energy_histogram(y_true_mh, y_pred_mh, file_name="ci_test_histogram.pdf")
+    #plot_energy_histogram(y_true_mh, y_pred_mh, file_name="ci_test_histogram.pdf")
 
     # 5. Metrics & Logging Results
     mae = mean_absolute_error(y_true_mh, y_pred_mh)
@@ -73,6 +74,7 @@ if __name__ == "__main__":
     is_ci = os.environ.get('GITHUB_ACTIONS') == 'true'
     
     test_config = {
+        'base_path':"./data/Bulk_water_ALMO_karhan/",
         'n_snapshot': 5 if is_ci else 2000, # Tiny sample for CI
         'n_samples': 125,
         'n_features': 952,
