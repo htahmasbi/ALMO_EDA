@@ -53,10 +53,10 @@ def run_test_case(model_path, config):
 
     # 4. Physical Unit Recovery
     # Reversing the log(-data) transformation used in data_loader
-    y_true_mh = -np.exp(E_test.numpy().flatten())
-    y_pred_mh = -np.exp(y_pred_log.flatten())
+    y_true_mh = -np.exp(E_test)
+    y_pred_mh = -np.exp(y_pred_log)
 
-    #plot_energy_histogram(y_true_mh, y_pred_mh, file_name="ci_test_histogram.pdf")
+    plot_energy_histogram(y_true_mh, y_pred_mh, file_name="ci_test_histogram.pdf")
 
     # 5. Metrics & Logging Results
     mae = mean_absolute_error(y_true_mh, y_pred_mh)
@@ -75,14 +75,14 @@ if __name__ == "__main__":
     
     test_config = {
         'base_path':"./data/Bulk_water_ALMO_karhan/",
-        'n_snapshot': 5 if is_ci else 2000, # Tiny sample for CI
+        'n_snapshot': 10 if is_ci else 2000, # Tiny sample for CI
         'n_samples': 125,
         'n_features': 952,
         'mode_typ': 'eval',
         'hidden_sizes': [50, 50],
         'output_size': 2,
         'start_index': 90000,
-        'end_index': 90010 if is_ci else 94000,
+        'end_index': 90020 if is_ci else 94000,
         'num_test_samples': 625 if is_ci else 250000
     }
     

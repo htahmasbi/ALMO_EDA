@@ -9,6 +9,7 @@ from src.utils import time_research_task
 
 class AtomisticDataset(Dataset):
     def __init__(self, features, energies):
+        assert len(features) == len(energies), "Mismatch in dataset size"
         self.features = torch.tensor(features, dtype=torch.float32)
         self.energies = torch.tensor(energies, dtype=torch.float32)
 
