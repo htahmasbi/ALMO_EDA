@@ -39,7 +39,7 @@ def run_test_case(model_path, config):
         input_size=config['n_features'],
         hidden_layers=config['hidden_sizes'],
         output_size=config['output_size'],
-        activation=torch.nn.Tanh # Matches your FFNet implementation
+        activation=config['activation'] # Matches your FFNet implementation
     ).to(device)
     
     # Load the best model weights
@@ -49,18 +49,18 @@ def run_test_case(model_path, config):
     # 3. Inference
     with torch.no_grad():
         #X = torch.tensor(D_test, dtype=torch.float32).to(device)
-        y_pred_log = model(D_test).cpu().numpy()
+        E_pred_log = model(D_test).cpu().numpy()
 
     # 4. Physical Unit Recovery
     # Reversing the log(-data) transformation used in data_loader
-    y_true_mh = -np.exp(E_test)
-    y_pred_mh = -np.exp(y_pred_log)
+    E_true_mh = -np.exp(E_test)
+    E_pred_mh = -np.exp(E_pred_log)
 
-    plot_energy_histogram(y_true_mh, y_pred_mh, file_name="ci_test_histogram.pdf")
+    plot_energy_histogram(E_true_mh, E_pred_mh, file_name="ci_test_histogram.pdf")
 
     # 5. Metrics & Logging Results
-    mae = mean_absolute_error(y_true_mh, y_pred_mh)
-    rmse = np.sqrt(mean_squared_error(y_true_mh, y_pred_mh))
+    mae = mean_absolute_error(E_true_mh, E_pred_mh)
+    rmse = np.sqrt(mean_squared_error(E_true_mh, E_pred_mh))
 
     logger.info("Evaluation Results:")
     logger.info(f"MAE:  {mae:.4f} mHartree")
@@ -81,6 +81,7 @@ if __name__ == "__main__":
         'mode_typ': 'eval',
         'hidden_sizes': [50, 50],
         'output_size': 2,
+        'activation': 'Tanh',
         'start_index': 90000,
         'end_index': 90020 if is_ci else 94000,
         'num_test_samples': 625 if is_ci else 250000
