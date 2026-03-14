@@ -34,7 +34,7 @@ def plot_energy_histogram(y_true, y_pred, file_name="energy_histogram.pdf", num_
 
     ax.set_xlabel('Energy (mHartree)', fontsize=14)
     ax.set_ylabel('Normalized Frequency', fontsize=14)
-    #ax.set_ylim(0, 0.10)
+    ax.set_ylim(0, 0.10)
     ax.legend(loc='upper left', frameon=False)
     
     plt.tight_layout()

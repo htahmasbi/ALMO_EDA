@@ -11,7 +11,7 @@ def main():
         config = yaml.safe_load(f)
 
     # 1. Load Data using your existing data_loader logic
-    n_feat, var_energy, D_tr, D_val, E_tr, E_val = data_loader(
+    D_tr, D_val, E_tr, E_val = data_loader(
         **config['data'] # Unpacks dictionary keys as arguments
     )
 
@@ -24,10 +24,11 @@ def main():
 
     # 4. Initialize Model
     model = FFNet(
-        input_size=n_feat,
+        input_size=config['data']['n_features'],
         hidden_layers=config['model']['hidden_sizes'],
-        output_size=config['data']['num_outputs'],
-        activation=config['model']['activation']
+        output_size=config['data']['n_outputs'],
+        activation=config['model']['activation'],
+        dropout_prob=config['model']['dropout']
     ).to(device)
 
     # 5. Loss and Optimizer

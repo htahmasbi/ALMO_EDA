@@ -1,4 +1,5 @@
 import torch
+import torch.nn as nn
 import torch.optim as optim
 
 def train_model(model, optimizer, train_loader, val_loader, criterion, device, num_epochs, early_stopping=True, patience=20):
@@ -45,3 +46,15 @@ def train_model(model, optimizer, train_loader, val_loader, criterion, device, n
         
         #print(f"Epoch {epoch+1}: Val Loss {valid_loss:.4f}")
         print(f"Epoch {epoch+1}: Train Loss: {train_loss:.4f}, Valid Loss: {valid_loss:.4f}")
+
+class CustomLoss(nn.Module):
+    def __init__(self):
+        super(CustomLoss, self).__init__()
+
+    def forward(self, output, target):
+        mse = torch.mean((output - target) ** 2)
+
+        # Compute variation of energy (assuming it's std of target)
+        variation_of_energy = torch.var(target) + 1e-8 # Avoid division by zero 
+
+        return mse / variation_of_energy

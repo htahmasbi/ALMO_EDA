@@ -165,8 +165,6 @@ def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #sca
         else:
             raise ValueError("Invalid output_type! Choose 'donor', 'acceptor', or 'both'.")
 
-        #var_energy_train = E_raw.var()
-
         # Split
         D_tr_raw, D_va_raw, E_train, E_valid = train_test_split(
             D_raw, E_raw, test_size=valid_size, random_state=random_seed
@@ -180,7 +178,7 @@ def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #sca
         D_valid = scaler.transform(D_va_raw)
 
         return torch.Tensor(D_train), torch.Tensor(D_valid), \
-               torch.Tensor(E_train), torch.Tensor(E_valid), scaler
+               torch.Tensor(E_train), torch.Tensor(E_valid) #, scaler
 
     elif mode == "eval":
         #if scaler is None:
