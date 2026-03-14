@@ -39,7 +39,8 @@ def run_test_case(model_path, config):
         input_size=config['n_features'],
         hidden_layers=config['hidden_sizes'],
         output_size=config['output_size'],
-        activation=config['activation'] # Matches your FFNet implementation
+        activation=config['activation'], 
+        dropout_prob=config['dropout']
     ).to(device)
     
     # Load the best model weights
@@ -82,6 +83,7 @@ if __name__ == "__main__":
         'hidden_sizes': [50, 50],
         'output_size': 2,
         'activation': 'Tanh',
+        'dropout': 0.0,
         'start_index': 90000,
         'end_index': 90020 if is_ci else 94000,
         'num_test_samples': 625 if is_ci else 250000
