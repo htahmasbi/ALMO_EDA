@@ -5,7 +5,7 @@ class FFNet(nn.Module):
     A configurable feed-forward neural network with multiple hidden layers,
     custom activation functions, Dropout, BatchNorm, and weight initialization.
     """
-    def __init__(self, input_size, hidden_layers, output_size, activation="ReLU", dropout_prob=0.0):
+    def __init__(self, input_size, hidden_layers, output_size, activation="ReLU", dropout_prob=dropout):
         """
         Parameters:
         - input_size (int): Number of input features.
