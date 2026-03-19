@@ -5,10 +5,16 @@ This repository contains a PyTorch-based neural network designed to predict elec
 
 ```text
 .
+├── README.md
+├── requirements.txt
+├── .gitignore
+│
 ├── configs
 │   └── base_config.yaml
 ├── data
 │   └── soap_descriptor.py
+├── models
+│   └── best_model_donor.pt
 └── tests
 │   ├── eval_model.py
 │   ├── eval_mof.py
@@ -17,12 +23,6 @@ This repository contains a PyTorch-based neural network designed to predict elec
 │   ├── post_processing_C2W2.py
 │   ├── post_processing.py
 │   └── run_train.py
-│
-├── models
-│   └── best_model_donor.pt
-├── README.md
-├── requirements.txt
-├── .gitignore
 └── src
     ├── data_loader.py
     ├── __init__.py
