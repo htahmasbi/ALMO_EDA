@@ -51,6 +51,9 @@ def correlation_plot(qq_true, qq_pred, file_name="correlation.png"):
     
     print("Minimum predicted energy:", qq_pred.min())
     print("Maximum predicted energy:", qq_pred.max())
+    
+    qq_true = qq_true.flatten()
+    qq_pred = qq_pred.flatten()
 
     # Density computation
     xy = np.vstack([qq_true, qq_pred])
