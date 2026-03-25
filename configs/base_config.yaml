@@ -1,9 +1,9 @@
 data:
-  base_path: "path/to/data"
-  n_snapshot: 3000
+  base_path: "./data/Bulk_water_ALMO_karhan/"
+  n_snapshot: 10
   n_samples: 125
   n_features: 952
-  mode: "eval"
+  mode: "train"
   output_type: "donor"
   n_outputs: 2
   start_index: "90000"
