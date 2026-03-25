@@ -41,8 +41,7 @@ def load_energy_data(file_path):
 def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #scalar=None, 
                 output_type="donor", n_outputs = 2,
                 start_index=90000, end_index=100000, step=2,
-                random_seed=123, valid_size=0.2, num_train_samples = 2000,
-                use_multiprocessing=True):
+                random_seed=123, valid_size=0.2, use_multiprocessing=True):
     """
     Unified loader for both Training and Post-Processing.
     
@@ -63,7 +62,6 @@ def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #sca
     - start_index (int): Start index for file names.
     - end_index (int): End index for file names.
     - step (int): Step size for indexing (default: 2).
-    - num_train_samples (int): Number of training samples.
     - valid_size (float): Fraction of data to use for validation.
     - random_seed (int): Random seed for reproducibility.
     - use_multiprocessing (bool): Use multiprocessing for faster file loading.
@@ -148,7 +146,7 @@ def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #sca
     # ==========================
     
     if mode == "train":
-        num_samples = num_train_samples
+        num_samples = valid_count * n_samples
         np.random.seed(random_seed)
         idx = np.random.choice(len(features_allo_reshaped), num_samples, replace=False)
         D_raw = features_allo_reshaped[idx]
