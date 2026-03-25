@@ -111,8 +111,8 @@ def loss_plot(train_losses, valid_losses, file_name="tv_loss.pdf"):
     # Add labels, title, and legend
     plt.xlabel('Epochs', fontsize=22)
     plt.ylabel('Loss', fontsize=22)
-    plt.ylim(1e-2, 5e-1)
-    plt.xlim(-10, 360)
+    #plt.ylim(1e-2, 5e-1)
+    #plt.xlim(-10, 360)
     plt.tick_params(axis='both', which='major', labelsize=18)
     plt.legend(loc='upper right', frameon=False, fontsize=18)
     #plt.grid(True)
