@@ -42,7 +42,7 @@ def main():
 
     # 6. Run Training
     train_losses, valid_losses = train_model(model, optimizer, train_loader, valid_loader, criterion, device, config['training']['epochs'])
-    loss_plot(train_losses, valid_losses, file_name="tv_loss.pdf)
+    loss_plot(train_losses, valid_losses, file_name="tv_loss.pdf")
 
 if __name__ == "__main__":
     main()
