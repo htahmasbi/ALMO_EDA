@@ -6,8 +6,8 @@ data:
   mode: "train"
   output_type: "donor"
   n_outputs: 2
-  start_index: "90000"
-  end_index: "90020"
+  start_index: 90000
+  end_index: 90020
   random_seed: 123
   valid_size: 0.2
   num_train_samples: 10
