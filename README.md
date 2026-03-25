@@ -15,14 +15,11 @@ This repository contains a PyTorch-based neural network designed to predict elec
 │   └── soap_descriptor.py
 ├── models
 │   └── best_model_donor.pt
-└── tests
+├── tests
 │   ├── eval_model.py
 │   ├── eval_mof.py
 │   ├── eval_test.py
-│   ├── eval_train.py
-│   ├── post_processing_C2W2.py
-│   ├── post_processing.py
-│   └── run_train.py
+│   └── eval_train.py
 └── src
     ├── data_loader.py
     ├── __init__.py
