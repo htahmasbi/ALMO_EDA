@@ -170,12 +170,12 @@ def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #sca
             D_raw, E_raw, test_size=valid_size, random_state=random_seed
         )
 
-        print(f"Shapes -> D_train: {D_train.shape}, D_valid: {D_valid.shape}, E_train: {E_train.shape}, E_valid: {E_valid.shape}")
-
         # FIT SCALER HERE
         scaler = StandardScaler().fit(D_tr_raw)
         D_train = scaler.transform(D_tr_raw)
         D_valid = scaler.transform(D_va_raw)
+
+        print(f"Shapes -> D_train: {D_train.shape}, D_valid: {D_valid.shape}, E_train: {E_train.shape}, E_valid: {E_valid.shape}")
 
         return torch.Tensor(D_train), torch.Tensor(D_valid), \
                torch.Tensor(E_train), torch.Tensor(E_valid) #, scaler
