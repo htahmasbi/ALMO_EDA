@@ -36,7 +36,6 @@ class ModelEvaluator:
         E_true_log = E_tensor.numpy()
         
         # Convert back from log scale: -exp(log(-E))
-        # Note: In your loader you used log(-data), so we reverse it here
         y_true = -np.exp(E_true_log)
         y_pred = -np.exp(E_pred_log)
         
@@ -95,7 +94,7 @@ if __name__ == "__main__":
     )
 
     # 3. Initialize and Run
-    tester = ModelEvaluator(eval_config, model_path="../models/best_model_donor.pt")
+    tester = ModelEvaluator(eval_config, model_path="./models/best_model_donor.pt")
     y_true, y_pred = tester.get_predictions(D_tensor, E_tensor)
     tester.calculate_metrics(y_true, y_pred)
     tester.plot_correlation(y_true, y_pred)

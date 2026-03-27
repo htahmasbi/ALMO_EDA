@@ -1,9 +1,9 @@
 import yaml
 import torch
+from torch.utils.data import DataLoader
 from src.data_loader import data_loader, AtomisticDataset
 from src.network import FFNet
 from src.trainer import train_model, CustomLoss
-from torch.utils.data import DataLoader
 from src.visualization import loss_plot
 
 def main():
