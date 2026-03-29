@@ -16,13 +16,12 @@ This repository contains a PyTorch-based neural network designed to predict elec
 ├── models
 │   └── best_model_donor.pt
 ├── tests
-│   ├── eval_model.py
 │   ├── eval_mof.py
 │   ├── eval_test.py
 │   └── eval_train.py
 └── src
-    ├── data_loader.py
     ├── __init__.py
+    ├── data_loader.py
     ├── logger.py
     ├── network.py
     ├── utils.py
@@ -38,4 +37,4 @@ This repository contains a PyTorch-based neural network designed to predict elec
 2. Place your data in the `/data` folder.
 
 3. Run the training:
-   `python main.py`
+   `python tests/eval_train.py`
