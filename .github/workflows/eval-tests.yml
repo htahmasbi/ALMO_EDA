@@ -1,4 +1,4 @@
-name: ALMO EDA NN evaluation test CI
+name: Evaluation test CI
 
 on:
   push:
