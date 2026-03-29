@@ -1,3 +1,7 @@
+![CPU Tests](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/eval-tests.yml/badge.svg)
+![CPU Tests](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/train-tests.yml/badge.svg)
+![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)
+![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 # ALMO EDA
 This repository contains a PyTorch-based neural network designed to predict electron delocalization energies of water molecules. By leveraging chemical descriptors (SOAP) as inputs, the model bypasses computationally expensive DFT calculations to provide rapid estimates of delocalization energies.
 
