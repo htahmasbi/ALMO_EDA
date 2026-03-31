@@ -1,6 +1,6 @@
 data:
   base_path: "./data/Bulk_water_ALMO_karhan/"
-  n_snapshot: 10
+  n_snapshots: 10
   n_samples: 125
   n_features: 952
   mode: "train"

@@ -1,7 +1,7 @@
 data:
   base_path: "./data/data_CPO-27/Cu_2_Water_2"
   sys_typ: "Cu2W2"
-  n_snapshot: 100
+  n_snapshots: 100
   n_samples: 72
   n_features: 952
   n_outputs: 2
