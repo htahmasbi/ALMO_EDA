@@ -204,3 +204,38 @@ def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #sca
         print(D_eval.shape, E_eval.shape)
 
         return torch.Tensor(D_eval), torch.Tensor(E_eval)
+
+
+def data_loader_mof(base_path, sys_typ, n_snapshots, n_samples, n_features):
+    """ Data loader for predicting of EDA of MOF systems
+
+    Parameters:
+    - base_path (str): Path of dataset 
+    - sys_typ (str): MOF system
+    - n_snapshot (int): Number of snapshots (timesteps).
+    - n_samples (int): Number of samples per snapshot.
+    - n_features (int): Number of feature dimensions.
+
+    """
+    features_list = []
+    
+    for i in range(n_snapshots):
+        file_path = f"{base_path}/{sys_typ}_coord_{i}_modified_soap_n8l6c5.npy"
+        ox_features = np.load(file_path)
+        features_list.append(ox_features)
+
+    features_allox = np.stack(features_list)
+    print(features_allox.shape)
+    
+    features_allo_reshaped = np.reshape(features_allox, (n_snapshots*n_samples, n_features))
+    print(features_allo_reshaped.shape)
+    
+    D_wmof = features_allo_reshaped[:] 
+
+    # Standardize input for improved learning. Fit is done only on training data,
+    # scaling is applied to both descriptors and their derivatives on training and
+    # test sets.
+    scaler = StandardScaler().fit(D_wmof)
+    D_pred = scaler.transform(D_wmof)
+    
+    return torch.Tensor(D_pred)

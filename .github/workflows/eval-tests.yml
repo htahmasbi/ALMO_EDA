@@ -1,4 +1,4 @@
-name: Evaluation test CI
+name: Evaluation test
 
 on:
   push:

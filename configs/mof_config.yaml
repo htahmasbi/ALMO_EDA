@@ -1,0 +1,13 @@
+data:
+  base_path: "./data/data_CPO-27/Cu_2_Water_2"
+  sys_typ: "Cu2W2"
+  n_snapshot: 100
+  n_samples: 72
+  n_features: 952
+  n_outputs: 2
+
+model:
+  model_path: "./models/best_model_donor.pt"
+  hidden_sizes: [50, 50]
+  activation: "Tanh"
+  dropout: 0.0

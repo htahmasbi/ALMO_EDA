@@ -1,4 +1,4 @@
-name: CPU training test CI
+name: CPU training test
 
 on:
   push:
