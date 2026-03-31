@@ -7,6 +7,8 @@ def train_model(model, optimizer, train_loader, val_loader, criterion, device, n
     i_worse = 0
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=10)
 
+    train_losses = []
+    valid_losses = []
     for epoch in range(num_epochs):
         model.train()
         train_loss = 0.0
@@ -30,12 +32,13 @@ def train_model(model, optimizer, train_loader, val_loader, criterion, device, n
                 valid_loss += criterion(model(features), targets).item()
         
         valid_loss /= len(val_loader)
+        valid_losses.append(valid_loss)
         # Update learning rate based on validation loss
         scheduler.step(valid_loss)
 
         if valid_loss < best_valid_loss:
             best_valid_loss = valid_loss
-            torch.save(model.state_dict(), "models/best_model.pt")
+            torch.save(model.state_dict(), "models/best_model_test.pt")
             # Reset counter if improvement 
             i_worse = 0
         # Only increment if early stopping is enabled and loss didn't improve
@@ -46,6 +49,7 @@ def train_model(model, optimizer, train_loader, val_loader, criterion, device, n
         
         #print(f"Epoch {epoch+1}: Val Loss {valid_loss:.4f}")
         print(f"Epoch {epoch+1}: Train Loss: {train_loss:.4f}, Valid Loss: {valid_loss:.4f}")
+    return train_losses, valid_losses
 
 class CustomLoss(nn.Module):
     def __init__(self):

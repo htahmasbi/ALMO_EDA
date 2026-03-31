@@ -91,3 +91,34 @@ def correlation_plot(qq_true, qq_pred, file_name="correlation.png"):
     plt.savefig(file_name)
     logger.info(f"Correlation saved as {file_name}")
     plt.close()
+
+def loss_plot(train_losses, valid_losses, file_name="tv_loss.pdf"):
+    """Plots losses vs epochs during training process"""
+    epochs = range(len(train_losses))
+    plt.figure(figsize=(8, 6))
+    plt.yscale("log")
+    plt.plot(epochs, train_losses, label='Train', color='C0', linewidth=2)
+    plt.plot(epochs, valid_losses, label='Validation', color='C1', linewidth=2)
+    
+    # Plot the train loss with a line and a circle marker at every 10th epoch
+    plt.scatter(epochs[::50], train_losses[::50], color='C0',
+                     marker='o', edgecolor=None, label='_nolegend_')
+    
+    # Plot the validation loss with a line and a square marker at every 10th epoch
+    plt.scatter(epochs[::50], valid_losses[::50], color='C1',
+                     marker='s', edgecolor=None, label='_nolegend_')
+    
+    # Add labels, title, and legend
+    plt.xlabel('Epochs', fontsize=22)
+    plt.ylabel('Loss', fontsize=22)
+    #plt.ylim(1e-2, 5e-1)
+    #plt.xlim(-10, 360)
+    plt.tick_params(axis='both', which='major', labelsize=18)
+    plt.legend(loc='upper right', frameon=False, fontsize=18)
+    #plt.grid(True)
+    
+    # Adjust layout and display plot
+    plt.tight_layout()
+    # Save the plot to a file for your manuscript
+    # You can change the file name and format (e.g., .svg, .pdf)
+    plt.savefig('tv_loss.pdf')

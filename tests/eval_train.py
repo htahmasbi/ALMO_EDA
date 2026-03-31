@@ -1,9 +1,10 @@
 import yaml
 import torch
+from torch.utils.data import DataLoader
 from src.data_loader import data_loader, AtomisticDataset
 from src.network import FFNet
 from src.trainer import train_model, CustomLoss
-from torch.utils.data import DataLoader
+from src.visualization import loss_plot
 
 def main():
     # Load configuration
@@ -40,7 +41,8 @@ def main():
     )
 
     # 6. Run Training
-    train_model(model, optimizer, train_loader, valid_loader, criterion, device, config['training']['epochs'])
+    train_losses, valid_losses = train_model(model, optimizer, train_loader, valid_loader, criterion, device, config['training']['epochs'])
+    loss_plot(train_losses, valid_losses, file_name="tv_loss.pdf")
 
 if __name__ == "__main__":
     main()

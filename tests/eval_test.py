@@ -1,9 +1,8 @@
+import yaml
 import torch
 import os
 import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error
-
-# Professional Imports
 from src.network import FFNet 
 from src.data_loader import data_loader 
 from src.visualization import energy_histogram_plot, correlation_plot
@@ -12,22 +11,18 @@ from src.logger import get_logger
 # Initialize logger for this specific module
 logger = get_logger("Evaluation-CI test")
 
-def run_test_case(model_path, config):
-    logger.info(f"Initializing evaluation for: {model_path}")
+def main():
+    logger.info(f"Initializing evaluation for our model")
 
+    # Load configuration
+    with open("configs/eval_config.yaml", "r") as f:
+        config = yaml.safe_load(f)
     # 1. Load Data using your existing data_loader logic
     try:
         D_test, E_test = data_loader(
-            base_path=config['base_path'],
-            n_snapshot=config['n_snapshot'],
-            n_samples=config['n_samples'],
-            n_features=config['n_features'],
-            mode=config['mode_typ'],
-            n_outputs=config['output_size'],
-            start_index=config['start_index'],
-            end_index=config['end_index'],
-            num_train_samples=config['num_test_samples'] 
+                **config['data']
         )
+
         logger.info("Successfully loaded test dataset.")
     except Exception as e:
         logger.error(f"Failed to load data: {e}")
@@ -36,15 +31,15 @@ def run_test_case(model_path, config):
     # 2. Setup Device and Model
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = FFNet(
-        input_size=config['n_features'],
-        hidden_layers=config['hidden_sizes'],
-        output_size=config['output_size'],
-        activation=config['activation'], 
-        dropout_prob=config['dropout']
+        input_size=config['data']['n_features'],
+        hidden_layers=config['model']['hidden_sizes'],
+        output_size=config['data']['n_outputs'],
+        activation=config['model']['activation'], 
+        dropout_prob=config['model']['dropout']
     ).to(device)
     
     # Load the best model weights
-    model.load_state_dict(torch.load(model_path, map_location=device))
+    model.load_state_dict(torch.load(config['model']['model_path'], map_location=device))
     model.eval()
 
     # 3. Inference
@@ -74,21 +69,5 @@ if __name__ == "__main__":
 
     # Check if we are running on GitHub Actions
     is_ci = os.environ.get('GITHUB_ACTIONS') == 'true'
-    
-    test_config = {
-        'base_path':"./data/Bulk_water_ALMO_karhan/",
-        'n_snapshot': 10 if is_ci else 2000, # Tiny sample for CI
-        'n_samples': 125,
-        'n_features': 952,
-        'mode_typ': 'eval',
-        'hidden_sizes': [50, 50],
-        'output_size': 2,
-        'activation': 'Tanh',
-        'dropout': 0.0,
-        'start_index': 90000,
-        'end_index': 90020 if is_ci else 94000,
-        'num_test_samples': 625 if is_ci else 250000
-    }
-    
     logger.info(f"Running in CI mode: {is_ci}")
-    run_test_case("./models/best_model_donor.pt", test_config)
+    main()
