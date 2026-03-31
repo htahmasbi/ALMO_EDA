@@ -54,7 +54,6 @@ def energy_histogram_mof(y_pred, file_name="energy_histogram.pdf", num_bins = 10
     w_pred1 = np.ones(len(y_pred[:, 0])) / len(y_pred[:, 0])
     w_pred2 = np.ones(len(y_pred[:, 1])) / len(y_pred[:, 1])
 
-    # Plot Predictions (Filled)
     ax.hist(y_pred[:, 0], bins=num_bins, range=range_xax, weights=w_pred1, 
             label="1st, Pred", color=colors[0], alpha=0.3, histtype='stepfilled')
     ax.hist(y_pred[:, 1], bins=num_bins, range=range_xax, weights=w_pred2, 
@@ -62,7 +61,7 @@ def energy_histogram_mof(y_pred, file_name="energy_histogram.pdf", num_bins = 10
 
     ax.set_xlabel('Energy (mHartree)', fontsize=14)
     ax.set_ylabel('Normalized Frequency', fontsize=14)
-    ax.set_ylim(0, 0.10)
+    ax.set_ylim(0, 0.25)
     ax.legend(loc='upper left', frameon=False)
     
     plt.tight_layout()
