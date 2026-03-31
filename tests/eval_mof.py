@@ -1,7 +1,7 @@
+import yaml
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-import os
 from src.visualization import energy_histogram_mof
 from src.network import FFNet
 from src.data_loader import data_loader_mof
