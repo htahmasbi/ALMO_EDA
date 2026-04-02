@@ -8,6 +8,6 @@ data:
 model:
   model_path: "./models/best_model_donor.pt"
   hidden_sizes: [50, 50]
+  output_size: 2
   activation: "Tanh"
   dropout: 0.0
-  n_outputs: 2

@@ -47,7 +47,6 @@ def train_model(model, optimizer, train_loader, val_loader, criterion, device, n
             if i_worse >= patience:
                 break
         
-        #print(f"Epoch {epoch+1}: Val Loss {valid_loss:.4f}")
         print(f"Epoch {epoch+1}: Train Loss: {train_loss:.4f}, Valid Loss: {valid_loss:.4f}")
     return train_losses, valid_losses
 

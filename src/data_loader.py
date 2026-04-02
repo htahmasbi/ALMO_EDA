@@ -44,13 +44,12 @@ def data_loader(base_path, n_snapshots, n_samples, n_features, mode="train", #sc
                 random_seed=123, valid_size=0.2, use_multiprocessing=True):
     """
     Unified loader for both Training and Post-Processing.
+    Load molecular features and energy values, preprocess data, and return train/validation tensors.
     
     Args:
         mode (str): "train" returns (D_train, D_valid, E_train, E_valid)
                     "eval" returns (D_tensor, E_tensor)
         scaler: If mode="eval", you MUST pass the scaler fitted during training.
-
-    Load molecular features and energy values, preprocess data, and return train/validation tensors.
 
     Parameters:
     - n_snapshots (int): Number of snapshots (timesteps).
@@ -67,7 +66,6 @@ def data_loader(base_path, n_snapshots, n_samples, n_features, mode="train", #sc
     - use_multiprocessing (bool): Use multiprocessing for faster file loading.
 
     Returns:
-    - n_features (int): Number of input features.
     - D_train (Tensor): Training feature set.
     - D_valid (Tensor): Validation feature set.
     - E_train (Tensor): Training energy values.
@@ -79,9 +77,7 @@ def data_loader(base_path, n_snapshots, n_samples, n_features, mode="train", #sc
     # Prepare file indices
     file_indices = range(start_index, end_index, step)
 
-    # ==========================
     # Load Features
-    # ==========================
     features_allox = np.zeros((n_snapshots, n_samples, n_features))
     file_paths = [os.path.join(base_path, f"0{idx}/coord_soap_nmax8_lmax6_cut5.npy") for idx in file_indices]
 
@@ -98,13 +94,12 @@ def data_loader(base_path, n_snapshots, n_samples, n_features, mode="train", #sc
             valid_count += 1
 
     print("Feature shape:", features_allox.shape)
+
     # Reshape features
     features_allo_reshaped = features_allox.reshape(valid_count * n_samples, n_features)
     print("Feature reshaped:", features_allo_reshaped.shape)
 
-    # ==========================
     # Load Energy Data (Donor/Acceptor/Both)
-    # ==========================
     acceptor_paths = [os.path.join(base_path, f"0{idx}/molecules.lowest.acceptor") for idx in file_indices]
     donor_paths = [os.path.join(base_path, f"0{idx}/molecules.lowest.donor") for idx in file_indices]
 
@@ -141,10 +136,8 @@ def data_loader(base_path, n_snapshots, n_samples, n_features, mode="train", #sc
 
     #plot_energy_histogram(data_out_log_donor, num_bins=100, range_xax=(-4, 4), file_name="out_data_hist_donor_log.pdf")
     #plot_energy_histogram(data_out_log_accep, num_bins=100, range_xax=(-4, 4), file_name="out_data_hist_accep_log.pdf")
-    # ==========================
+
     # Select Training Data
-    # ==========================
-    
     if mode == "train":
         num_samples = valid_count * n_samples
         np.random.seed(random_seed)

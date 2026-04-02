@@ -15,7 +15,9 @@ This repository contains a PyTorch-based neural network designed to predict elec
 ├── .gitignore
 │
 ├── configs
-│   └── base_config.yaml
+│   ├── base_config.py
+│   ├── eval_config.py
+│   └── mof_config.yaml
 ├── data
 │   └── soap_descriptor.py
 ├── models

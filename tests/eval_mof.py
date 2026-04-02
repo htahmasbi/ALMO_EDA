@@ -32,7 +32,7 @@ def main():
     model = FFNet(
         input_size=config['data']['n_features'],
         hidden_layers=config['model']['hidden_sizes'],
-        output_size=config['model']['n_outputs'],
+        output_size=config['model']['output_size'],
         activation=config['model']['activation'], 
         dropout_prob=config['model']['dropout']
     ).to(device)
