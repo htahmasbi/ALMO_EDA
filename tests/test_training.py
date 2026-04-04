@@ -8,7 +8,7 @@ from src.visualization import loss_plot
 
 def main():
     # Load configuration
-    with open("configs/base_config.yaml", "r") as f:
+    with open("configs/train_config.yaml", "r") as f:
         config = yaml.safe_load(f)
 
     # 1. Load Data using your existing data_loader logic

@@ -1,4 +1,4 @@
-name: CPU training test
+name: CI CPU Test
 
 on:
   push:
@@ -28,23 +28,23 @@ jobs:
     - name: List files for debugging
       run: ls -r  # -R :This will print every file and folder in the runner's log
 
-    - name: Run Training Test Case
+    - name: Run Evaluation Test Case
       run: |
         export PYTHONPATH=$PYTHONPATH:$(pwd)
         # We run the evaluation script as a test
         # We use a try-except or check for exit codes
-        python tests/eval_train.py
+        python tests/test_inference.py
 
-    - name: Upload Training Logs
+    - name: Upload Evaluation Logs
       if: always()  # Saves logs even if the test fails
       uses: actions/upload-artifact@v4
       with:
-        name: model-training-logs
+        name: model-evaluation-logs
         path: logs/          # This matches the folder created by src/logger.py
 
     - name: Upload Plots
       if: always()
       uses: actions/upload-artifact@v4
       with:
-        name: train-plots
-        path: "*.pdf"  # This will grab energy_histogram.pdf and any others
+        name: evaluation-plots
+        path: "*.pdf\n*.png"  # This will grab energy_histogram.pdf and any others
