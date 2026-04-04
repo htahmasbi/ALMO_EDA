@@ -15,17 +15,17 @@ This repository contains a PyTorch-based neural network designed to predict elec
 ├── .gitignore
 │
 ├── configs
-│   ├── base_config.py
-│   ├── eval_config.py
-│   └── mof_config.yaml
+│   ├── mof_config.yaml
+│   ├── inference_config.yaml
+│   └── train_config.yaml
 ├── data
 │   └── soap_descriptor.py
 ├── models
 │   └── best_model_donor.pt
 ├── tests
-│   ├── eval_mof.py
-│   ├── eval_test.py
-│   └── eval_train.py
+│   ├── test_mof.py
+│   ├── test_inference.py
+│   └── test_training.py
 └── src
     ├── __init__.py
     ├── data_loader.py

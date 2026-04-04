@@ -15,7 +15,7 @@ def main():
     logger.info(f"Initializing evaluation for our model")
 
     # Load configuration
-    with open("configs/test_config.yaml", "r") as f:
+    with open("configs/inference_config.yaml", "r") as f:
         config = yaml.safe_load(f)
     # 1. Load Data using your existing data_loader logic
     try:
