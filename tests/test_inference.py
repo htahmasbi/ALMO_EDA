@@ -5,7 +5,7 @@ import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 from src.network import FFNet 
 from src.data_loader import data_loader 
-from src.visualization import energy_histogram_plot, correlation_plot
+from src.visualization import energy_histogram_comparison, correlation_plot
 from src.logger import get_logger
 
 # Initialize logger for this specific module
@@ -52,7 +52,7 @@ def main():
     E_true_mh = -np.exp(E_test)
     E_pred_mh = -np.exp(E_pred_log)
 
-    energy_histogram_plot(E_true_mh, E_pred_mh, file_name="ci_test_histogram.pdf")
+    energy_histogram_comparison(E_true_mh, E_pred_mh, file_name="ci_test_histogram.pdf")
     correlation_plot(E_true_mh, E_pred_mh, file_name="ci_correlation.png")
 
     # 5. Metrics & Logging Results
