@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from multiprocessing import Pool
 from src.utils import time_research_task
+from src.visualization import energy_histogram
 
 class AtomisticDataset(Dataset):
     def __init__(self, features, energies):
@@ -127,15 +128,19 @@ def data_loader(base_path, n_snapshots, n_samples, n_features, mode="train", #sc
     data_out_donor_reshaped = data_out_donor.reshape(valid_count * n_samples, 5)
     print("Energy reshaped:", data_out_accep_reshaped.shape, data_out_donor_reshaped.shape)
 
-    #plot_energy_histogram(data_out_donor_reshaped, num_bins=100, range_xax=(-30, 0), file_name="out_data_hist_donor.pdf")
-    #plot_energy_histogram(data_out_accep_reshaped, num_bins=100, range_xax=(-30, 0), file_name="out_data_hist_accep.pdf")
+    if output_type=="donor":
+        energy_histogram(data_out_donor_reshaped, file_name="output_data_donor.pdf")
+    else:
+        energy_histogram(data_out_accep_reshaped, file_name="output_data_accep.pdf")
 
     # Convert to log scale
     data_out_log_accep = np.log(-data_out_accep_reshaped)
     data_out_log_donor = np.log(-data_out_donor_reshaped)
 
-    #plot_energy_histogram(data_out_log_donor, num_bins=100, range_xax=(-4, 4), file_name="out_data_hist_donor_log.pdf")
-    #plot_energy_histogram(data_out_log_accep, num_bins=100, range_xax=(-4, 4), file_name="out_data_hist_accep_log.pdf")
+    if output_type=="donor":
+        energy_histogram(data_out_log_donor, file_name="output_data_donor_log.pdf", num_bins=100, range_xax=(-4, 4))
+    else:
+        energy_histogram(data_out_log_accep, file_name="output_data_accep_log.pdf", num_bins=100, range_xax=(-4, 4))
 
     # Select Training Data
     if mode == "train":

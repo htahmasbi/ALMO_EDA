@@ -2,7 +2,7 @@ import yaml
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from src.visualization import energy_histogram_mof
+from src.visualization import energy_histogram
 from src.network import FFNet
 from src.data_loader import data_loader_mof
 from src.logger import get_logger
@@ -47,7 +47,7 @@ def main():
         E_pred_log = model(D_test).cpu().numpy()
     
     E_pred_mh = -np.exp(E_pred_log)
-    energy_histogram_mof(E_pred_mh, file_name="ci_histogram_mof.pdf")
+    energy_histogram(E_pred_mh, file_name="ci_histogram_mof.pdf")
 
 
 if __name__ == "__main__":

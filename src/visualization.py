@@ -5,12 +5,11 @@ from scipy.stats import gaussian_kde
 
 logger = get_logger("Visualization")
 
-def energy_histogram_plot(y_true, y_pred, file_name="energy_histogram.pdf", num_bins = 100):
+def energy_histogram_plot(y_true, y_pred, file_name="energy_histogram.pdf", num_bins = 100, range_xax = (-30, 0)):
     """
     Plots a normalized histogram comparing DFT truth vs NN predictions.
     """
     colors = ["#d62728", "#1f77b4"]  # Red for 1st level, Blue for 2nd
-    range_xax = (-30, 0)
 
     fig, ax = plt.subplots(figsize=(8, 6))
     
@@ -42,12 +41,11 @@ def energy_histogram_plot(y_true, y_pred, file_name="energy_histogram.pdf", num_
     logger.info(f"Histogram saved as {file_name}")
     plt.close()
     
-def energy_histogram_mof(y_pred, file_name="energy_histogram.pdf", num_bins = 100):
+def energy_histogram(y_pred, file_name="energy_histogram.pdf", num_bins = 100, range_xax = (-30, 0)):
     """
     Plots a normalized histogram of NN predictions of EDA for MOF systems.
     """
     colors = ["#d62728", "#1f77b4"]  # Red for 1st level, Blue for 2nd
-    range_xax = (-30, 0)
 
     fig, ax = plt.subplots(figsize=(8, 6))
     
