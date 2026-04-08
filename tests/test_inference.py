@@ -17,7 +17,7 @@ def main():
     # Load configuration
     with open("configs/inference_config.yaml", "r") as f:
         config = yaml.safe_load(f)
-    # 1. Load Data using your existing data_loader logic
+    # 1. Load Data using the data_loader logic
     try:
         D_test, E_test = data_loader(
                 **config['data']
