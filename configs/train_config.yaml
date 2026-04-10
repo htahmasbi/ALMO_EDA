@@ -1,0 +1,26 @@
+data:
+  base_path: "./data/Bulk_water_ALMO_karhan/"
+  n_snapshots: 10
+  n_samples: 125
+  n_features: 952
+  mode: "train"
+  output_type: "donor"
+  n_outputs: 2
+  start_index: 90000
+  end_index: 90020
+  random_seed: 123
+  valid_size: 0.2
+  use_multiprocessing: "True"
+
+model:
+  model_path: "./models/best_model_donor.pt"
+  hidden_sizes: [50, 50]
+  output_size: 2
+  activation: "Tanh"
+  dropout: 0.0
+
+training:
+  epochs: 500
+  lr: 0.0001
+  batch_size: 128
+  weight_decay: 0.001

@@ -6,6 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from multiprocessing import Pool
 from src.utils import time_research_task
+from src.visualization import energy_histogram
 
 class AtomisticDataset(Dataset):
     def __init__(self, features, energies):
@@ -38,22 +39,21 @@ def load_energy_data(file_path):
         return None
 
 @time_research_task
-def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #scalar=None, 
+def data_loader(base_path, n_snapshots, n_samples, n_features, mode="train", #scalar=None, 
                 output_type="donor", n_outputs = 2,
                 start_index=90000, end_index=100000, step=2,
                 random_seed=123, valid_size=0.2, use_multiprocessing=True):
     """
     Unified loader for both Training and Post-Processing.
+    Load molecular features and energy values, preprocess data, and return train/validation tensors.
     
     Args:
         mode (str): "train" returns (D_train, D_valid, E_train, E_valid)
                     "eval" returns (D_tensor, E_tensor)
         scaler: If mode="eval", you MUST pass the scaler fitted during training.
 
-    Load molecular features and energy values, preprocess data, and return train/validation tensors.
-
     Parameters:
-    - n_snapshot (int): Number of snapshots (timesteps).
+    - n_snapshots (int): Number of snapshots (timesteps).
     - n_samples (int): Number of samples per snapshot.
     - n_features (int): Number of feature dimensions.
     - output_type (str): Choose "donor", "acceptor", or "both".
@@ -67,7 +67,6 @@ def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #sca
     - use_multiprocessing (bool): Use multiprocessing for faster file loading.
 
     Returns:
-    - n_features (int): Number of input features.
     - D_train (Tensor): Training feature set.
     - D_valid (Tensor): Validation feature set.
     - E_train (Tensor): Training energy values.
@@ -79,10 +78,8 @@ def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #sca
     # Prepare file indices
     file_indices = range(start_index, end_index, step)
 
-    # ==========================
     # Load Features
-    # ==========================
-    features_allox = np.zeros((n_snapshot, n_samples, n_features))
+    features_allox = np.zeros((n_snapshots, n_samples, n_features))
     file_paths = [os.path.join(base_path, f"0{idx}/coord_soap_nmax8_lmax6_cut5.npy") for idx in file_indices]
 
     if use_multiprocessing:
@@ -98,13 +95,12 @@ def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #sca
             valid_count += 1
 
     print("Feature shape:", features_allox.shape)
+
     # Reshape features
     features_allo_reshaped = features_allox.reshape(valid_count * n_samples, n_features)
     print("Feature reshaped:", features_allo_reshaped.shape)
 
-    # ==========================
     # Load Energy Data (Donor/Acceptor/Both)
-    # ==========================
     acceptor_paths = [os.path.join(base_path, f"0{idx}/molecules.lowest.acceptor") for idx in file_indices]
     donor_paths = [os.path.join(base_path, f"0{idx}/molecules.lowest.donor") for idx in file_indices]
 
@@ -132,19 +128,21 @@ def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #sca
     data_out_donor_reshaped = data_out_donor.reshape(valid_count * n_samples, 5)
     print("Energy reshaped:", data_out_accep_reshaped.shape, data_out_donor_reshaped.shape)
 
-    #plot_energy_histogram(data_out_donor_reshaped, num_bins=100, range_xax=(-30, 0), file_name="out_data_hist_donor.pdf")
-    #plot_energy_histogram(data_out_accep_reshaped, num_bins=100, range_xax=(-30, 0), file_name="out_data_hist_accep.pdf")
+    if output_type=="donor":
+        energy_histogram(data_out_donor_reshaped, file_name="output_data_donor.pdf")
+    else:
+        energy_histogram(data_out_accep_reshaped, file_name="output_data_accep.pdf")
 
     # Convert to log scale
     data_out_log_accep = np.log(-data_out_accep_reshaped)
     data_out_log_donor = np.log(-data_out_donor_reshaped)
 
-    #plot_energy_histogram(data_out_log_donor, num_bins=100, range_xax=(-4, 4), file_name="out_data_hist_donor_log.pdf")
-    #plot_energy_histogram(data_out_log_accep, num_bins=100, range_xax=(-4, 4), file_name="out_data_hist_accep_log.pdf")
-    # ==========================
+    if output_type=="donor":
+        energy_histogram(data_out_log_donor, file_name="output_data_donor_log.pdf", num_bins=100, range_xax=(-4, 4))
+    else:
+        energy_histogram(data_out_log_accep, file_name="output_data_accep_log.pdf", num_bins=100, range_xax=(-4, 4))
+
     # Select Training Data
-    # ==========================
-    
     if mode == "train":
         num_samples = valid_count * n_samples
         np.random.seed(random_seed)
@@ -204,3 +202,38 @@ def data_loader(base_path, n_snapshot, n_samples, n_features, mode="train", #sca
         print(D_eval.shape, E_eval.shape)
 
         return torch.Tensor(D_eval), torch.Tensor(E_eval)
+
+
+def data_loader_mof(base_path, sys_typ, n_snapshots, n_samples, n_features):
+    """ Data loader for predicting of EDA of MOF systems
+
+    Parameters:
+    - base_path (str): Path of dataset 
+    - sys_typ (str): MOF system
+    - n_snapshots (int): Number of snapshots (timesteps).
+    - n_samples (int): Number of samples per snapshot.
+    - n_features (int): Number of feature dimensions.
+
+    """
+    features_list = []
+    
+    for i in range(n_snapshots):
+        file_path = f"{base_path}/{sys_typ}_coord_{i}_modified_soap_n8l6c5.npy"
+        ox_features = np.load(file_path)
+        features_list.append(ox_features)
+
+    features_allox = np.stack(features_list)
+    print(features_allox.shape)
+    
+    features_allo_reshaped = np.reshape(features_allox, (n_snapshots*n_samples, n_features))
+    print(features_allo_reshaped.shape)
+    
+    D_wmof = features_allo_reshaped[:] 
+
+    # Standardize input for improved learning. Fit is done only on training data,
+    # scaling is applied to both descriptors and their derivatives on training and
+    # test sets.
+    scaler = StandardScaler().fit(D_wmof)
+    D_pred = scaler.transform(D_wmof)
+    
+    return torch.Tensor(D_pred)

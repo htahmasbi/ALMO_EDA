@@ -1,0 +1,50 @@
+name: CI CPU Test
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        # Install the libraries from your requirements.txt
+        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+    
+    - name: List files for debugging
+      run: ls -r  # -R :This will print every file and folder in the runner's log
+
+    - name: Run Evaluation Test Case
+      run: |
+        export PYTHONPATH=$PYTHONPATH:$(pwd)
+        # We run the evaluation script as a test
+        # We use a try-except or check for exit codes
+        python tests/test_inference.py
+
+    - name: Upload Evaluation Logs
+      if: always()  # Saves logs even if the test fails
+      uses: actions/upload-artifact@v4
+      with:
+        name: model-evaluation-logs
+        path: logs/          # This matches the folder created by src/logger.py
+
+    - name: Upload Plots
+      if: always()
+      uses: actions/upload-artifact@v4
+      with:
+        name: evaluation-plots
+        path: "*.pdf\n*.png"  # This will grab energy_histogram.pdf and any others
