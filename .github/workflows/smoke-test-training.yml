@@ -1,4 +1,4 @@
-name: CPU training test
+name: CPU Test Training
 
 on:
   push:

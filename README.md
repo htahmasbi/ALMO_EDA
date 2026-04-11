@@ -1,4 +1,4 @@
-![CI CPU Inference Test](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/ci-cpu-tests.yml/badge.svg)
+![CPU Test Inference](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/ci-cpu-tests.yml/badge.svg)
 ![Smoke Test](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/smoke-test-training.yml/badge.svg)
 ![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
