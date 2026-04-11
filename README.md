@@ -1,6 +1,5 @@
-![CI CPU Test](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/ci-cpu-tests.yml/badge.svg)
+![CI CPU Inference Test](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/ci-cpu-tests.yml/badge.svg)
 ![Smoke Test](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/smoke-test-training.yml/badge.svg)
-![MOF Validation](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/test-mof-validation.yml/badge.svg)
 ![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 # ALMO EDA

@@ -1,4 +1,4 @@
-name: CI CPU Test
+name: CPU Test Inference
 
 on:
   push:
@@ -7,44 +7,33 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test:
+  run_tests:
+    name: Full Evaluation Pipeline
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
 
-    - name: Set up Python
-      uses: actions/setup-python@v5
-      with:
-        python-version: '3.10'
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
-    - name: Install dependencies
-      run: |
-        python -m pip install --upgrade pip
-        # Install the libraries from your requirements.txt
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    
-    - name: List files for debugging
-      run: ls -r  # -R :This will print every file and folder in the runner's log
+      - name: Run Inference
+        run: python tests/test_inference.py
 
-    - name: Run Evaluation Test Case
-      run: |
-        export PYTHONPATH=$PYTHONPATH:$(pwd)
-        # We run the evaluation script as a test
-        # We use a try-except or check for exit codes
-        python tests/test_inference.py
+      - name: Run MOF Validation
+        run: python tests/test_mof.py 
 
-    - name: Upload Evaluation Logs
-      if: always()  # Saves logs even if the test fails
-      uses: actions/upload-artifact@v4
-      with:
-        name: model-evaluation-logs
-        path: logs/          # This matches the folder created by src/logger.py
-
-    - name: Upload Plots
-      if: always()
-      uses: actions/upload-artifact@v4
-      with:
-        name: evaluation-plots
-        path: "*.pdf\n*.png"  # This will grab energy_histogram.pdf and any others
+      - name: Upload All Results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-evaluation-artifacts
+          path: |
+            logs/
+            *.pdf
+            *.png
