@@ -44,3 +44,23 @@ This repository contains a PyTorch-based neural network designed to predict elec
 
 3. Run the training:
    `python tests/eval_train.py`
+
+## Citation 
+If you publish work that uses or mentions this code, please cite the following paper:
+
+```bibtex
+@article{Tahmasbi2025,
+  title = {Scalable machine learning model for energy decomposition analysis in aqueous systems},
+  volume = {163},
+  ISSN = {1089-7690},
+  url = {http://dx.doi.org/10.1063/5.0303825},
+  DOI = {10.1063/5.0303825},
+  number = {21},
+  journal = {The Journal of Chemical Physics},
+  publisher = {AIP Publishing},
+  author = {Tahmasbi,  Hossein and Beerbaum,  Michael and Brzoza,  Bartosz and Cangi,  Attila and K\"{u}hne,  Thomas D.},
+  year = {2025},
+  pages = {214115},
+  month = dec 
+}
+```
