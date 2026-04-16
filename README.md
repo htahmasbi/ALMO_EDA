@@ -12,6 +12,7 @@ This repository contains a PyTorch-based neural network designed to predict elec
 ├── README.md
 ├── requirements.txt
 ├── .gitignore
+├── LICENSE
 │
 ├── configs
 │   ├── mof_config.yaml
@@ -24,6 +25,7 @@ This repository contains a PyTorch-based neural network designed to predict elec
 ├── tests
 │   ├── test_mof.py
 │   ├── test_inference.py
+│   ├── test_optuna.py
 │   └── test_training.py
 └── src
     ├── __init__.py
@@ -32,6 +34,7 @@ This repository contains a PyTorch-based neural network designed to predict elec
     ├── network.py
     ├── utils.py
     ├── visualization.py
+    ├── optimization.py
     └── trainer.py
 ```
 
