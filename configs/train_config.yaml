@@ -27,7 +27,7 @@ training:
 
 optimization:
   enabled: True
-  n_trials: 50
+  n_trials: 5
   epochs_per_trial: 5
   search_space:
     num_layers: [2, 4, 6]
