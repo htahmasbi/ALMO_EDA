@@ -21,7 +21,7 @@ def main():
         logger.error(f"Failed to load data: {e}")
         exit(1)
 
-    device = torch.device('cpu')
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # Run Optimization Engine
     logger.info("Triggering Optuna Search Engine...")

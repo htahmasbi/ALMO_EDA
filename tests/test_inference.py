@@ -17,7 +17,8 @@ def main():
     # Load configuration
     with open("configs/inference_config.yaml", "r") as f:
         config = yaml.safe_load(f)
-    # 1. Load Data using the data_loader logic
+
+    # Load Data using the data_loader logic
     try:
         D_test, E_test = data_loader(
                 **config['data']
@@ -28,7 +29,7 @@ def main():
         logger.error(f"Failed to load data: {e}")
         return
 
-    # 2. Setup Device and Model
+    # Setup Device and Model
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model = FFNet(
         input_size=config['data']['n_features'],
@@ -42,12 +43,12 @@ def main():
     model.load_state_dict(torch.load(config['model']['model_path'], map_location=device))
     model.eval()
 
-    # 3. Inference
+    # Inference
     with torch.no_grad():
         #X = torch.tensor(D_test, dtype=torch.float32).to(device)
         E_pred_log = model(D_test).cpu().numpy()
 
-    # 4. Physical Unit Recovery
+    # Physical Unit Recovery
     # Reversing the log(-data) transformation used in data_loader
     E_true_mh = -np.exp(E_test)
     E_pred_mh = -np.exp(E_pred_log)
@@ -55,7 +56,7 @@ def main():
     energy_histogram_comparison(E_true_mh, E_pred_mh, file_name="ci_test_histogram.pdf")
     correlation_plot(E_true_mh, E_pred_mh, file_name="ci_correlation.png")
 
-    # 5. Metrics & Logging Results
+    # Metrics & Logging Results
     mae = mean_absolute_error(E_true_mh, E_pred_mh)
     rmse = np.sqrt(mean_squared_error(E_true_mh, E_pred_mh))
 
