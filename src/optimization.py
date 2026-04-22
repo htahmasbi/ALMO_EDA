@@ -5,10 +5,12 @@ from torch.utils.data import DataLoader
 from src.network import FFNet
 from src.trainer import train_model, CustomLoss  
 from src.data_loader import AtomisticDataset
+from src.utils import time_research_task
 from src.logger import get_logger
 
 logger = get_logger("Optimization-Engine")
 
+@time_research_task
 def hyperparameter_optuna(D_tr, D_val, E_tr, E_val, config, device):
     """
     Main entry point for optimization. 
