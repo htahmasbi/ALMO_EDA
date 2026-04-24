@@ -16,7 +16,7 @@ def main():
     with open("configs/train_config.yaml", "r") as f:
         config = yaml.safe_load(f)
 
-    # 1. Load Data using the data_loader logic
+    # Load Data using the data_loader logic
     try:
         D_tr, D_val, E_tr, E_val = data_loader(
         **config['data']
@@ -26,16 +26,16 @@ def main():
         logger.error(f"Failed to load data: {e}")
         return
 
-    # 2. Setup Device (GPU/CPU)
+    # Setup Device (GPU/CPU)
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
+    # Create Datasets and Loaders
     logger.info(f"Creating train and validation datasets")
-    # 3. Create Datasets and Loaders
     train_loader = DataLoader(AtomisticDataset(D_tr, E_tr), batch_size=config['training']['batch_size'], shuffle=True)
     valid_loader = DataLoader(AtomisticDataset(D_val, E_val), batch_size=config['training']['batch_size'])
 
+    # Initialize Model
     logger.info(f"Initializing model")
-    # 4. Initialize Model
     model = FFNet(
         input_size=config['data']['n_features'],
         hidden_layers=config['model']['hidden_sizes'],
@@ -44,7 +44,7 @@ def main():
         dropout_prob=config['model']['dropout']
     ).to(device)
 
-    # 5. Loss and Optimizer
+    # Loss and Optimizer
     criterion = CustomLoss()
     optimizer = torch.optim.Adam(
         model.parameters(), 
@@ -52,7 +52,7 @@ def main():
         weight_decay=config['training']['weight_decay']
     )
 
-    # 6. Run Training
+    # Run Training
     logger.info(f"Training started")
     train_losses, valid_losses = train_model(model, optimizer, train_loader, valid_loader, criterion, device, config['training']['epochs'])
     loss_plot(train_losses, valid_losses, file_name="tv_loss.pdf")

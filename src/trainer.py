@@ -1,10 +1,12 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from src.utils import time_research_task
 from src.logger import get_logger
 
 logger = get_logger("Training", log_file="training.log")
 
+@time_research_task
 def train_model(model, optimizer, train_loader, val_loader, criterion, device, num_epochs, early_stopping=True, patience=20):
     best_valid_loss = float('inf')
     i_worse = 0
@@ -50,7 +52,7 @@ def train_model(model, optimizer, train_loader, val_loader, criterion, device, n
             if i_worse >= patience:
                 break
         
-        print(f"Epoch {epoch+1}: Train Loss: {train_loss:.4f}, Valid Loss: {valid_loss:.4f}")
+        #print(f"Epoch {epoch+1}: Train Loss: {train_loss:.4f}, Valid Loss: {valid_loss:.4f}")
         logger.info(f"Epoch {epoch+1}: Train Loss: {train_loss:.4f}, Valid Loss: {valid_loss:.4f}")
     return train_losses, valid_losses
 

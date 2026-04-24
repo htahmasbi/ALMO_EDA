@@ -6,3 +6,4 @@ dscribe
 ase
 pyyaml
 rdkit
+optuna

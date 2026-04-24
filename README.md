@@ -1,6 +1,5 @@
-![CI CPU Test](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/ci-cpu-tests.yml/badge.svg)
+![CPU Test Inference](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/ci-cpu-tests.yml/badge.svg)
 ![Smoke Test](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/smoke-test-training.yml/badge.svg)
-![MOF Validation](https://github.com/htahmasbi/ALMO_EDA/actions/workflows/test-mof-validation.yml/badge.svg)
 ![Python 3.10](https://img.shields.io/badge/python-3.10-blue.svg)
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 # ALMO EDA
@@ -13,6 +12,7 @@ This repository contains a PyTorch-based neural network designed to predict elec
 ├── README.md
 ├── requirements.txt
 ├── .gitignore
+├── LICENSE
 │
 ├── configs
 │   ├── mof_config.yaml
@@ -25,6 +25,7 @@ This repository contains a PyTorch-based neural network designed to predict elec
 ├── tests
 │   ├── test_mof.py
 │   ├── test_inference.py
+│   ├── test_optuna.py
 │   └── test_training.py
 └── src
     ├── __init__.py
@@ -33,6 +34,7 @@ This repository contains a PyTorch-based neural network designed to predict elec
     ├── network.py
     ├── utils.py
     ├── visualization.py
+    ├── optimization.py
     └── trainer.py
 ```
 
@@ -45,3 +47,23 @@ This repository contains a PyTorch-based neural network designed to predict elec
 
 3. Run the training:
    `python tests/eval_train.py`
+
+## Citation 
+If you publish work that uses or mentions this code, please cite the following paper:
+
+```bibtex
+@article{Tahmasbi2025,
+  title = {Scalable machine learning model for energy decomposition analysis in aqueous systems},
+  volume = {163},
+  ISSN = {1089-7690},
+  url = {http://dx.doi.org/10.1063/5.0303825},
+  DOI = {10.1063/5.0303825},
+  number = {21},
+  journal = {The Journal of Chemical Physics},
+  publisher = {AIP Publishing},
+  author = {Tahmasbi,  Hossein and Beerbaum,  Michael and Brzoza,  Bartosz and Cangi,  Attila and K\"{u}hne,  Thomas D.},
+  year = {2025},
+  pages = {214115},
+  month = dec 
+}
+```
