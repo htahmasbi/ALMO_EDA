@@ -1,5 +1,5 @@
 data:
-  train_path: "./data/Bulk_water_ALMO_karhan/"
+  data_path: "./data/Bulk_water_ALMO_karhan/"
   n_snapshots: 10
   n_samples: 125
   n_features: 952
