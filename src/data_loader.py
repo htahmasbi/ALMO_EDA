@@ -39,7 +39,7 @@ def load_energy_data(file_path):
         return None
 
 @time_research_task
-def data_loader(base_path, n_snapshots, n_samples, n_features, mode="train", #scalar=None, 
+def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #scalar=None, 
                 output_type="donor", n_outputs = 2,
                 start_index=90000, end_index=100000, step=2,
                 random_seed=123, valid_size=0.2, use_multiprocessing=True):
@@ -58,7 +58,7 @@ def data_loader(base_path, n_snapshots, n_samples, n_features, mode="train", #sc
     - n_features (int): Number of feature dimensions.
     - output_type (str): Choose "donor", "acceptor", or "both".
     - n_outputs (int): Number of outputs to return (1 or 2), taken from first or first two energy columns.
-    - base_path (str): Base directory for data files.
+    - data_path (str): Base directory for data files.
     - start_index (int): Start index for file names.
     - end_index (int): End index for file names.
     - step (int): Step size for indexing (default: 2).
@@ -80,7 +80,7 @@ def data_loader(base_path, n_snapshots, n_samples, n_features, mode="train", #sc
 
     # Load Features
     features_allox = np.zeros((n_snapshots, n_samples, n_features))
-    file_paths = [os.path.join(base_path, f"0{idx}/coord_soap_nmax8_lmax6_cut5.npy") for idx in file_indices]
+    file_paths = [os.path.join(data_path, f"0{idx}/coord_soap_nmax8_lmax6_cut5.npy") for idx in file_indices]
 
     if use_multiprocessing:
         with Pool() as pool:
@@ -101,8 +101,8 @@ def data_loader(base_path, n_snapshots, n_samples, n_features, mode="train", #sc
     print("Feature reshaped:", features_allo_reshaped.shape)
 
     # Load Energy Data (Donor/Acceptor/Both)
-    acceptor_paths = [os.path.join(base_path, f"0{idx}/molecules.lowest.acceptor") for idx in file_indices]
-    donor_paths = [os.path.join(base_path, f"0{idx}/molecules.lowest.donor") for idx in file_indices]
+    acceptor_paths = [os.path.join(data_path, f"0{idx}/molecules.lowest.acceptor") for idx in file_indices]
+    donor_paths = [os.path.join(data_path, f"0{idx}/molecules.lowest.donor") for idx in file_indices]
 
     if use_multiprocessing:
         with Pool() as pool:
@@ -204,11 +204,11 @@ def data_loader(base_path, n_snapshots, n_samples, n_features, mode="train", #sc
         return torch.Tensor(D_eval), torch.Tensor(E_eval)
 
 
-def data_loader_mof(base_path, sys_typ, n_snapshots, n_samples, n_features):
+def data_loader_mof(data_path, sys_typ, n_snapshots, n_samples, n_features):
     """ Data loader for predicting of EDA of MOF systems
 
     Parameters:
-    - base_path (str): Path of dataset 
+    - data_path (str): Path of dataset 
     - sys_typ (str): MOF system
     - n_snapshots (int): Number of snapshots (timesteps).
     - n_samples (int): Number of samples per snapshot.
@@ -218,7 +218,7 @@ def data_loader_mof(base_path, sys_typ, n_snapshots, n_samples, n_features):
     features_list = []
     
     for i in range(n_snapshots):
-        file_path = f"{base_path}/{sys_typ}_coord_{i}_modified_soap_n8l6c5.npy"
+        file_path = f"{data_path}/{sys_typ}_coord_{i}_modified_soap_n8l6c5.npy"
         ox_features = np.load(file_path)
         features_list.append(ox_features)
 
