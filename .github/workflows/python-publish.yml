@@ -29,8 +29,9 @@ jobs:
       - name: Build release distributions
         run: |
           # NOTE: put your own distribution build steps here.
-          python -m pip install build
+          python -m pip install build twine
           python -m build
+          twine check dist/* # Ensures your README and metadata are PyPI-compliant
 
       - name: Upload distributions
         uses: actions/upload-artifact@v4
