@@ -11,13 +11,13 @@ class FFNet(nn.Module):
         - input_size (int): Number of input features.
         - hidden_layers (list of int): List specifying the size of each hidden layer.
         - output_size (int): Number of output features.
-        - activation (str): Activation function class (e.g., "ReLU", "Tanh").
+        - activation (str): Activation function class (e.g., "ReLU", "Tanh", "Sigmoid", and "LeakyReLU").
         - dropout_prob (float): Dropout probability (default 0.2).
         """
         super().__init__()
         
         # Map config string to Torch class
-        activations = {"ReLU": nn.ReLU, "Tanh": nn.Tanh, "Sigmoid": nn.Sigmoid}
+        activations = {"ReLU": nn.ReLU, "Tanh": nn.Tanh, "Sigmoid": nn.Sigmoid, "LeakyReLU": nn.LeakyReLU}
         act_func = activations.get(activation, nn.ReLU)
 
         layers = []

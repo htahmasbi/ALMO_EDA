@@ -100,7 +100,7 @@ def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #sc
     features_allo_reshaped = features_allox.reshape(valid_count * n_samples, n_features)
     print("Feature reshaped:", features_allo_reshaped.shape)
 
-    # Load Energy Data (Donor/Acceptor/Both)
+    # Load Energy Data (Donor/Acceptor)
     acceptor_paths = [os.path.join(data_path, f"0{idx}/molecules.lowest.acceptor") for idx in file_indices]
     donor_paths = [os.path.join(data_path, f"0{idx}/molecules.lowest.donor") for idx in file_indices]
 
@@ -183,8 +183,8 @@ def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #sc
         ## Transform using the SAVED scaler, do NOT .fit()
         #D_eval = scaler.transform(features_allo_reshaped)
         #E_eval = data_out_log_donor[:, :kwargs.get('n_outputs', 2)]
+
         # Standardize input data
-      
         scaler = StandardScaler().fit(features_allo_reshaped)
         D_eval = scaler.transform(features_allo_reshaped)
         if output_type == "donor":
@@ -230,9 +230,7 @@ def data_loader_mof(data_path, sys_typ, n_snapshots, n_samples, n_features):
     
     D_wmof = features_allo_reshaped[:] 
 
-    # Standardize input for improved learning. Fit is done only on training data,
-    # scaling is applied to both descriptors and their derivatives on training and
-    # test sets.
+    # Standardize input for improved learning; scaling is applied to descriptors
     scaler = StandardScaler().fit(D_wmof)
     D_pred = scaler.transform(D_wmof)
     

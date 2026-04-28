@@ -9,7 +9,7 @@ def energy_histogram_comparison(y_true, y_pred, file_name="energy_histogram.pdf"
     """
     Plots a normalized histogram comparing DFT truth vs NN predictions.
     """
-    colors = ["#d62728", "#1f77b4"]  # Red for 1st level, Blue for 2nd
+    colors = ["#d62728", "#1f77b4"]  # Red for 1st, Blue for 2nd
 
     fig, ax = plt.subplots(figsize=(8, 6))
     
@@ -45,7 +45,7 @@ def energy_histogram(y_pred, file_name="energy_histogram.pdf", num_bins = 100, r
     """
     Plots a normalized histogram of NN predictions of EDA for MOF systems.
     """
-    colors = ["#d62728", "#1f77b4"]  # Red for 1st level, Blue for 2nd
+    colors = ["#d62728", "#1f77b4"]  # Red for 1st, Blue for 2nd
 
     fig, ax = plt.subplots(figsize=(8, 6))
     
