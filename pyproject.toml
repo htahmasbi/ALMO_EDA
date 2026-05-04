@@ -1,0 +1,48 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "almo-eda"
+version = "0.1.0"
+description = "Machine learning models for ALMO-EDA energy prediction"
+readme = "README.md"
+requires-python = ">=3.9"
+authors = [
+  { name = "Hossein Tahmasbi" }
+]
+dependencies = [
+  "torch>=2.0",
+  "numpy",
+  "scikit-learn",
+  "matplotlib",
+  "scipy",
+  "dscribe",
+  "ase",
+  "pyyaml",
+  "optuna"
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "ruff",
+  "black",
+  "mypy",
+  "pre-commit"
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["almo_eda*"]
+
+[project.scripts]
+almo-eda-train = "scripts.train:main"
+almo-eda-evaluate = "scripts.evaluate:main"
+almo-eda-optimize = "scripts.optimize:main"
+
+[tool.black]
+line-length = 100
+
+[tool.ruff]
+line-length = 100
