@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from src.logger import get_logger
+from almo_eda.logger import get_logger
 from scipy.stats import gaussian_kde
 
 logger = get_logger("Visualization")

@@ -2,10 +2,10 @@ import yaml
 import torch
 import numpy as np
 import matplotlib.pyplot as plt
-from src.visualization import energy_histogram
-from src.network import FFNet
-from src.data_loader import data_loader_mof
-from src.logger import get_logger
+from almo_eda.visualization import energy_histogram
+from almo_eda.network import FFNet
+from almo_eda.data_loader import data_loader_mof
+from almo_eda.logger import get_logger
 
 # Initialize modular logger
 logger = get_logger("System Evaluation MOF")

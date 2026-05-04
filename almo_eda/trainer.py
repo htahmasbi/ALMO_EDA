@@ -1,8 +1,8 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from src.utils import time_research_task
-from src.logger import get_logger
+from almo_eda.utils import time_research_task
+from almo_eda.logger import get_logger
 
 logger = get_logger("Training", log_file="training.log")
 

@@ -27,7 +27,7 @@ This repository contains a PyTorch-based neural network designed to predict elec
 │   ├── test_inference.py
 │   ├── test_optuna.py
 │   └── test_training.py
-└── src
+└── almo_eda
     ├── __init__.py
     ├── data_loader.py
     ├── logger.py

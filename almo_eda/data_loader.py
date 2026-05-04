@@ -5,8 +5,8 @@ from torch.utils.data import Dataset
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from multiprocessing import Pool
-from src.utils import time_research_task
-from src.visualization import energy_histogram
+from almo_eda.utils import time_research_task
+from almo_eda.visualization import energy_histogram
 
 class AtomisticDataset(Dataset):
     def __init__(self, features, energies):

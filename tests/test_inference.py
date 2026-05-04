@@ -3,10 +3,10 @@ import torch
 import os
 import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error
-from src.network import FFNet 
-from src.data_loader import data_loader 
-from src.visualization import energy_histogram_comparison, correlation_plot
-from src.logger import get_logger
+from almo_eda.network import FFNet 
+from almo_eda.data_loader import data_loader 
+from almo_eda.visualization import energy_histogram_comparison, correlation_plot
+from almo_eda.logger import get_logger
 
 # Initialize logger for this specific module
 logger = get_logger("Evaluation-CI test")

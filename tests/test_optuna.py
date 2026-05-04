@@ -1,8 +1,8 @@
 import yaml
 import torch
-from src.data_loader import data_loader
-from src.optimization import hyperparameter_optuna
-from src.logger import get_logger
+from almo_eda.data_loader import data_loader
+from almo_eda.optimization import hyperparameter_optuna
+from almo_eda.logger import get_logger
 
 logger = get_logger("Optimization-CI CPU test")
 

@@ -2,11 +2,11 @@ import optuna
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader
-from src.network import FFNet
-from src.trainer import train_model, CustomLoss  
-from src.data_loader import AtomisticDataset
-from src.utils import time_research_task
-from src.logger import get_logger
+from almo_eda.network import FFNet
+from almo_eda.trainer import train_model, CustomLoss  
+from almo_eda.data_loader import AtomisticDataset
+from almo_eda.utils import time_research_task
+from almo_eda.logger import get_logger
 
 logger = get_logger("Optimization-Engine")
 

@@ -1,11 +1,11 @@
 import yaml
 import torch
 from torch.utils.data import DataLoader
-from src.data_loader import data_loader, AtomisticDataset
-from src.network import FFNet
-from src.trainer import train_model, CustomLoss
-from src.visualization import loss_plot
-from src.logger import get_logger
+from almo_eda.data_loader import data_loader, AtomisticDataset
+from almo_eda.network import FFNet
+from almo_eda.trainer import train_model, CustomLoss
+from almo_eda.visualization import loss_plot
+from almo_eda.logger import get_logger
 
 logger = get_logger("Training-CI CPU test")
 

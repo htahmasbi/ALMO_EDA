@@ -1,6 +1,6 @@
 import time
 from functools import wraps
-from src.logger import get_logger
+from almo_eda.logger import get_logger
 
 logger = get_logger("Timer")
 
