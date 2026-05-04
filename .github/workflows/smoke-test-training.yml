@@ -29,10 +29,10 @@ jobs:
       run: ls -r  # -R :This will print every file and folder in the runner's log
 
     - name: Run Training Test Case
-      run: python tests/test_training.py
+      run: python examples/test_training.py
 
     - name: Run Optimization Test
-      run: python tests/test_optuna.py
+      run: python examples/test_optuna.py
     
     - name: Upload All Results
       if: always()

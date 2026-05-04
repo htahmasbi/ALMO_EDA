@@ -25,10 +25,10 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
 
       - name: Run Inference
-        run: python tests/test_inference.py
+        run: python examples/test_inference.py
 
       - name: Run MOF Validation
-        run: python tests/test_mof.py 
+        run: python examples/test_mof.py 
 
       - name: Upload All Results
         if: always()

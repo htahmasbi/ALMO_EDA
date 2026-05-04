@@ -22,7 +22,7 @@ This repository contains a PyTorch-based neural network designed to predict elec
 │   └── soap_descriptor.py
 ├── models
 │   └── best_model_donor.pt
-├── tests
+├── examples
 │   ├── test_mof.py
 │   ├── test_inference.py
 │   ├── test_optuna.py
