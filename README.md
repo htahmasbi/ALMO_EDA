@@ -11,8 +11,10 @@ This repository contains a PyTorch-based neural network designed to predict elec
 .
 ├── README.md
 ├── requirements.txt
+├── requirements-dev.txt
 ├── .gitignore
 ├── LICENSE
+├── pyproject.toml
 │
 ├── configs
 │   ├── mof_config.yaml
@@ -23,10 +25,10 @@ This repository contains a PyTorch-based neural network designed to predict elec
 ├── models
 │   └── best_model_donor.pt
 ├── examples
-│   ├── test_mof.py
-│   ├── test_inference.py
-│   ├── test_optuna.py
-│   └── test_training.py
+│   ├── run_mof.py
+│   ├── run_inference.py
+│   ├── run_optuna.py
+│   └── run_training.py
 └── almo_eda
     ├── __init__.py
     ├── data_loader.py
@@ -46,7 +48,7 @@ This repository contains a PyTorch-based neural network designed to predict elec
 2. Place your data in the `/data` folder.
 
 3. Run the training:
-   `python tests/eval_train.py`
+   `python examples/run_training.py`
 
 ## Citation 
 If you publish work that uses or mentions this code, please cite the following paper:
