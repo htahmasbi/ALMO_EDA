@@ -40,14 +40,17 @@ This repository contains a PyTorch-based neural network designed to predict elec
     └── trainer.py
 ```
 
-## Getting Started
+## Installation
 
-1. Install dependencies:
-   `pip install -r requirements.txt`
+```bash
 
-2. Place your data in the `/data` folder.
+python -m pip install -e ".[dev]"
+``` 
+## Run examples
 
-3. Run the training:
+1. Place your data in the `/data` folder.
+
+2. Run the training:
    `python examples/run_training.py`
 
 ## Citation 
