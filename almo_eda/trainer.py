@@ -7,7 +7,11 @@ from almo_eda.logger import get_logger
 logger = get_logger("Training", log_file="training.log")
 
 @time_research_task
-def train_model(model, optimizer, train_loader, val_loader, criterion, device, num_epochs, early_stopping=True, patience=20):
+def train_model(model, optimizer, train_loader, val_loader, criterion, device, num_epochs, 
+        early_stopping=True, 
+        patience=20,
+        checkpoint_path=None,
+        ):
     best_valid_loss = float('inf')
     i_worse = 0
     scheduler = optim.lr_scheduler.ReduceLROnPlateau(optimizer, mode='min', factor=0.5, patience=10)
@@ -43,9 +47,13 @@ def train_model(model, optimizer, train_loader, val_loader, criterion, device, n
 
         if valid_loss < best_valid_loss:
             best_valid_loss = valid_loss
-            torch.save(model.state_dict(), "models/best_model_test.pt")
+            if checkpoint_path is not None:
+                torch.save(model.state_dict(), checkpoint_path)
+            #torch.save(model.state_dict(), "models/best_model_test.pt")
+
             # Reset counter if improvement 
             i_worse = 0
+
         # Only increment if early stopping is enabled and loss didn't improve
         elif early_stopping:
             i_worse += 1

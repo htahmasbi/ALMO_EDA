@@ -54,7 +54,14 @@ def main():
 
     # Run Training
     logger.info(f"Training started")
-    train_losses, valid_losses = train_model(model, optimizer, train_loader, valid_loader, criterion, device, config['training']['epochs'])
+    train_losses, valid_losses = train_model(model, 
+            optimizer, 
+            train_loader, 
+            valid_loader, 
+            criterion, 
+            device, config['training']['epochs'], 
+            checkpoint_path=config['training']['checkpoint_path']
+            )
     loss_plot(train_losses, valid_losses, file_name="tv_loss.pdf")
 
 if __name__ == "__main__":
