@@ -36,11 +36,6 @@ dev = [
 where = ["."]
 include = ["almo_eda*"]
 
-[project.scripts]
-almo-eda-train = "scripts.train:main"
-almo-eda-evaluate = "scripts.evaluate:main"
-almo-eda-optimize = "scripts.optimize:main"
-
 [tool.black]
 line-length = 100
 
