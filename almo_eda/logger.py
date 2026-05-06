@@ -1,6 +1,7 @@
 import logging
 import os
 
+
 def get_logger(name, log_file="experiment.log"):
     """Configures a logger that outputs to both a file and the console."""
 
@@ -17,7 +18,7 @@ def get_logger(name, log_file="experiment.log"):
         logger.setLevel(logging.INFO)
 
         # Create formatters
-        formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
 
         # File handler
         file_handler = logging.FileHandler(log_path)

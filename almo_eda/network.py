@@ -1,10 +1,12 @@
 import torch.nn as nn
 
+
 class FFNet(nn.Module):
     """
     A configurable feed-forward neural network with multiple hidden layers,
     custom activation functions, Dropout, BatchNorm, and weight initialization.
     """
+
     def __init__(self, input_size, hidden_layers, output_size, activation="ReLU", dropout_prob=0.0):
         """
         Parameters:
@@ -15,9 +17,14 @@ class FFNet(nn.Module):
         - dropout_prob (float): Dropout probability (default 0.2).
         """
         super().__init__()
-        
+
         # Map config string to Torch class
-        activations = {"ReLU": nn.ReLU, "Tanh": nn.Tanh, "Sigmoid": nn.Sigmoid, "LeakyReLU": nn.LeakyReLU}
+        activations = {
+            "ReLU": nn.ReLU,
+            "Tanh": nn.Tanh,
+            "Sigmoid": nn.Sigmoid,
+            "LeakyReLU": nn.LeakyReLU,
+        }
         act_func = activations.get(activation, nn.ReLU)
 
         layers = []
@@ -37,7 +44,7 @@ class FFNet(nn.Module):
         Forward pass through the network.
         Parameters:
         - x (Tensor): Input tensor of shape (batch_size, input_size).
-        
+
         Returns:
         - Tensor: Output tensor of shape (batch_size, output_size).
         """

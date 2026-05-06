@@ -45,6 +45,10 @@ This repository contains a PyTorch-based neural network designed to predict elec
 ```bash
 
 python -m pip install -e ".[dev]"
+```
+or
+```bash
+python -m pip install -r requirements.txt
 ``` 
 ## Run examples
 

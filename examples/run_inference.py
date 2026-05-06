@@ -3,13 +3,14 @@ import torch
 import os
 import numpy as np
 from sklearn.metrics import mean_absolute_error, mean_squared_error
-from almo_eda.network import FFNet 
-from almo_eda.data_loader import data_loader 
+from almo_eda.network import FFNet
+from almo_eda.data_loader import data_loader
 from almo_eda.visualization import energy_histogram_comparison, correlation_plot
 from almo_eda.logger import get_logger
 
 # Initialize logger for this specific module
 logger = get_logger("Evaluation-CI test")
+
 
 def main():
     logger.info(f"Initializing evaluation for our model")
@@ -20,9 +21,7 @@ def main():
 
     # Load Data using the data_loader logic
     try:
-        D_test, E_test = data_loader(
-                **config['data']
-        )
+        D_test, E_test = data_loader(**config["data"])
 
         logger.info("Successfully loaded test dataset.")
     except Exception as e:
@@ -30,22 +29,22 @@ def main():
         return
 
     # Setup Device and Model
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = FFNet(
-        input_size=config['data']['n_features'],
-        hidden_layers=config['model']['hidden_sizes'],
-        output_size=config['model']['output_size'],
-        activation=config['model']['activation'], 
-        dropout_prob=config['model']['dropout']
+        input_size=config["data"]["n_features"],
+        hidden_layers=config["model"]["hidden_sizes"],
+        output_size=config["model"]["output_size"],
+        activation=config["model"]["activation"],
+        dropout_prob=config["model"]["dropout"],
     ).to(device)
-    
+
     # Load the best model weights
-    model.load_state_dict(torch.load(config['model']['model_path'], map_location=device))
+    model.load_state_dict(torch.load(config["model"]["model_path"], map_location=device))
     model.eval()
 
     # Inference
     with torch.no_grad():
-        #X = torch.tensor(D_test, dtype=torch.float32).to(device)
+        # X = torch.tensor(D_test, dtype=torch.float32).to(device)
         E_pred_log = model(D_test).cpu().numpy()
 
     # Physical Unit Recovery
@@ -63,12 +62,13 @@ def main():
     logger.info("Evaluation Results:")
     logger.info(f"MAE:  {mae:.4f} mHartree")
     logger.info(f"RMSE: {rmse:.4f} mHartree")
-    
+
     return mae, rmse
+
 
 if __name__ == "__main__":
 
     # Check if we are running on GitHub Actions
-    is_ci = os.environ.get('GITHUB_ACTIONS') == 'true'
+    is_ci = os.environ.get("GITHUB_ACTIONS") == "true"
     logger.info(f"Running in CI mode: {is_ci}")
     main()

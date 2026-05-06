@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "almo-eda"
-version = "0.1.0"
+version = "0.2.0"
 description = "Machine learning models for ALMO-EDA energy prediction"
 readme = "README.md"
 requires-python = ">=3.9"
@@ -31,6 +31,11 @@ dev = [
   "mypy",
   "pre-commit"
 ]
+
+[project.urls]
+Homepage = "https://github.com/htahmasbi/ALMO_EDA"
+Repository = "https://github.com/htahmasbi/ALMO_EDA"
+Issues = "https://github.com/htahmasbi/ALMO_EDA/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]

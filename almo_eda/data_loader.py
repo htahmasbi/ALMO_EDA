@@ -8,6 +8,7 @@ from multiprocessing import Pool
 from almo_eda.utils import time_research_task
 from almo_eda.visualization import energy_histogram
 
+
 class AtomisticDataset(Dataset):
     def __init__(self, features, energies):
         assert len(features) == len(energies), "Mismatch in dataset size"
@@ -20,6 +21,7 @@ class AtomisticDataset(Dataset):
     def __getitem__(self, idx):
         return self.features[idx], self.energies[idx]
 
+
 def load_features(file_path):
     """Loads the feature file from the given path."""
     try:
@@ -27,6 +29,7 @@ def load_features(file_path):
     except Exception as e:
         print(f"Error loading file: {file_path}, Error: {e}")
         return None
+
 
 def load_energy_data(file_path):
     """Loads energy data from a text file, converting to mHartree."""
@@ -38,15 +41,27 @@ def load_energy_data(file_path):
         print(f"Error reading energy file: {file_path}, Error: {e}")
         return None
 
+
 @time_research_task
-def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #scalar=None, 
-                output_type="donor", n_outputs = 2,
-                start_index=90000, end_index=100000, step=2,
-                random_seed=123, valid_size=0.2, use_multiprocessing=True):
+def data_loader(
+    data_path,
+    n_snapshots,
+    n_samples,
+    n_features,
+    mode="train",  # scalar=None,
+    output_type="donor",
+    n_outputs=2,
+    start_index=90000,
+    end_index=100000,
+    step=2,
+    random_seed=123,
+    valid_size=0.2,
+    use_multiprocessing=True,
+):
     """
     Unified loader for both Training and Post-Processing.
     Load molecular features and energy values, preprocess data, and return train/validation tensors.
-    
+
     Args:
         mode (str): "train" returns (D_train, D_valid, E_train, E_valid)
                     "eval" returns (D_tensor, E_tensor)
@@ -72,15 +87,20 @@ def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #sc
     - E_train (Tensor): Training energy values.
     - E_valid (Tensor): Validation energy values.
     """
-    
-    assert n_outputs in [1, 2], "n_outputs must be 1 or 2 (selects first or first two energy values)."
+
+    assert n_outputs in [
+        1,
+        2,
+    ], "n_outputs must be 1 or 2 (selects first or first two energy values)."
 
     # Prepare file indices
     file_indices = range(start_index, end_index, step)
 
     # Load Features
     features_allox = np.zeros((n_snapshots, n_samples, n_features))
-    file_paths = [os.path.join(data_path, f"0{idx}/coord_soap_nmax8_lmax6_cut5.npy") for idx in file_indices]
+    file_paths = [
+        os.path.join(data_path, f"0{idx}/coord_soap_nmax8_lmax6_cut5.npy") for idx in file_indices
+    ]
 
     if use_multiprocessing:
         with Pool() as pool:
@@ -101,8 +121,12 @@ def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #sc
     print("Feature reshaped:", features_allo_reshaped.shape)
 
     # Load Energy Data (Donor/Acceptor)
-    acceptor_paths = [os.path.join(data_path, f"0{idx}/molecules.lowest.acceptor") for idx in file_indices]
-    donor_paths = [os.path.join(data_path, f"0{idx}/molecules.lowest.donor") for idx in file_indices]
+    acceptor_paths = [
+        os.path.join(data_path, f"0{idx}/molecules.lowest.acceptor") for idx in file_indices
+    ]
+    donor_paths = [
+        os.path.join(data_path, f"0{idx}/molecules.lowest.donor") for idx in file_indices
+    ]
 
     if use_multiprocessing:
         with Pool() as pool:
@@ -118,8 +142,8 @@ def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #sc
     valid_count = 0
     for i, (a_data, d_data) in enumerate(zip(acceptor_data, donor_data)):
         if a_data is not None and d_data is not None:
-            data_out_accep[valid_count, :a_data.shape[0], :] = a_data
-            data_out_donor[valid_count, :d_data.shape[0], :] = d_data
+            data_out_accep[valid_count, : a_data.shape[0], :] = a_data
+            data_out_donor[valid_count, : d_data.shape[0], :] = d_data
             valid_count += 1
 
     print("Energy shape:", data_out_accep.shape, data_out_donor.shape)
@@ -128,7 +152,7 @@ def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #sc
     data_out_donor_reshaped = data_out_donor.reshape(valid_count * n_samples, 5)
     print("Energy reshaped:", data_out_accep_reshaped.shape, data_out_donor_reshaped.shape)
 
-    if output_type=="donor":
+    if output_type == "donor":
         energy_histogram(data_out_donor_reshaped, file_name="output_data_donor.pdf")
     else:
         energy_histogram(data_out_accep_reshaped, file_name="output_data_accep.pdf")
@@ -137,10 +161,20 @@ def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #sc
     data_out_log_accep = np.log(-data_out_accep_reshaped)
     data_out_log_donor = np.log(-data_out_donor_reshaped)
 
-    if output_type=="donor":
-        energy_histogram(data_out_log_donor, file_name="output_data_donor_log.pdf", num_bins=100, range_xax=(-4, 4))
+    if output_type == "donor":
+        energy_histogram(
+            data_out_log_donor,
+            file_name="output_data_donor_log.pdf",
+            num_bins=100,
+            range_xax=(-4, 4),
+        )
     else:
-        energy_histogram(data_out_log_accep, file_name="output_data_accep_log.pdf", num_bins=100, range_xax=(-4, 4))
+        energy_histogram(
+            data_out_log_accep,
+            file_name="output_data_accep_log.pdf",
+            num_bins=100,
+            range_xax=(-4, 4),
+        )
 
     # Select Training Data
     if mode == "train":
@@ -154,10 +188,9 @@ def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #sc
         elif output_type == "acceptor":
             E_raw = data_out_log_accep[idx, :n_outputs]
         elif output_type == "both":
-            E_raw = np.concatenate([
-                data_out_log_donor[idx, :n_outputs],
-                data_out_log_accep[idx, :n_outputs]
-            ] , axis=1 )
+            E_raw = np.concatenate(
+                [data_out_log_donor[idx, :n_outputs], data_out_log_accep[idx, :n_outputs]], axis=1
+            )
         else:
             raise ValueError("Invalid output_type! Choose 'donor', 'acceptor', or 'both'.")
 
@@ -171,18 +204,24 @@ def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #sc
         D_train = scaler.transform(D_tr_raw)
         D_valid = scaler.transform(D_va_raw)
 
-        print(f"Shapes -> D_train: {D_train.shape}, D_valid: {D_valid.shape}, E_train: {E_train.shape}, E_valid: {E_valid.shape}")
+        print(
+            f"Shapes -> D_train: {D_train.shape}, D_valid: {D_valid.shape}, E_train: {E_train.shape}, E_valid: {E_valid.shape}"
+        )
 
-        return torch.Tensor(D_train), torch.Tensor(D_valid), \
-               torch.Tensor(E_train), torch.Tensor(E_valid) #, scaler
+        return (
+            torch.Tensor(D_train),
+            torch.Tensor(D_valid),
+            torch.Tensor(E_train),
+            torch.Tensor(E_valid),
+        )  # , scaler
 
     elif mode == "eval":
-        #if scaler is None:
+        # if scaler is None:
         #    raise ValueError("You must provide the training scaler for evaluation!")
 
         ## Transform using the SAVED scaler, do NOT .fit()
-        #D_eval = scaler.transform(features_allo_reshaped)
-        #E_eval = data_out_log_donor[:, :kwargs.get('n_outputs', 2)]
+        # D_eval = scaler.transform(features_allo_reshaped)
+        # E_eval = data_out_log_donor[:, :kwargs.get('n_outputs', 2)]
 
         # Standardize input data
         scaler = StandardScaler().fit(features_allo_reshaped)
@@ -192,10 +231,9 @@ def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #sc
         elif output_type == "acceptor":
             E_eval = data_out_log_accep[:, :n_outputs]
         elif output_type == "both":
-            E_eval = np.concatenate([
-                data_out_log_donor[:, :n_outputs],
-                data_out_log_accep[:, :n_outputs]
-            ] , axis=1 )
+            E_eval = np.concatenate(
+                [data_out_log_donor[:, :n_outputs], data_out_log_accep[:, :n_outputs]], axis=1
+            )
         else:
             raise ValueError("Invalid output_type! Choose 'donor', 'acceptor', or 'both'.")
 
@@ -205,10 +243,10 @@ def data_loader(data_path, n_snapshots, n_samples, n_features, mode="train", #sc
 
 
 def data_loader_mof(data_path, sys_typ, n_snapshots, n_samples, n_features):
-    """ Data loader for predicting of EDA of MOF systems
+    """Data loader for predicting of EDA of MOF systems
 
     Parameters:
-    - data_path (str): Path of dataset 
+    - data_path (str): Path of dataset
     - sys_typ (str): MOF system
     - n_snapshots (int): Number of snapshots (timesteps).
     - n_samples (int): Number of samples per snapshot.
@@ -216,7 +254,7 @@ def data_loader_mof(data_path, sys_typ, n_snapshots, n_samples, n_features):
 
     """
     features_list = []
-    
+
     for i in range(n_snapshots):
         file_path = f"{data_path}/{sys_typ}_coord_{i}_modified_soap_n8l6c5.npy"
         ox_features = np.load(file_path)
@@ -224,14 +262,14 @@ def data_loader_mof(data_path, sys_typ, n_snapshots, n_samples, n_features):
 
     features_allox = np.stack(features_list)
     print(features_allox.shape)
-    
-    features_allo_reshaped = np.reshape(features_allox, (n_snapshots*n_samples, n_features))
+
+    features_allo_reshaped = np.reshape(features_allox, (n_snapshots * n_samples, n_features))
     print(features_allo_reshaped.shape)
-    
-    D_wmof = features_allo_reshaped[:] 
+
+    D_wmof = features_allo_reshaped[:]
 
     # Standardize input for improved learning; scaling is applied to descriptors
     scaler = StandardScaler().fit(D_wmof)
     D_pred = scaler.transform(D_wmof)
-    
+
     return torch.Tensor(D_pred)
