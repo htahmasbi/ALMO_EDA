@@ -48,18 +48,22 @@ This repository contains a PyTorch-based neural network designed to predict elec
 ## Installation
 
 ```bash
-
+git clone https://github.com/htahmasbi/ALMO_EDA.git
 python -m pip install -e ".[dev]"
 ```
 or
 ```bash
 python -m pip install -r requirements.txt
 ``` 
+## Data Description
+
+ - Inputs: Descriptors derived from Cartesian ($XYZ$) coordinates of water molecules, capturing local geometric orientations.
+ - Target: Electron Delocalization Energy ($E$), calculated via the ALMO-EDA scheme implemented in CP2K.
+
 ## Run examples
 
 1. Place your data in the `/data` folder.
-
-2. Run the training:
+2. Modify and run the example scripts:
    `python examples/run_training.py`
 
 ## Citation 
