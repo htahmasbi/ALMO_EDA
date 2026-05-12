@@ -7,8 +7,13 @@ logger = get_logger("Visualization")
 
 
 def energy_histogram_comparison(
-    y_true, y_pred, file_name="energy_histogram.pdf", num_bins=100, range_xax=(-30, 0)
-):
+    y_true, 
+    y_pred, 
+    file_name="energy_histogram.pdf", 
+    num_bins=100, 
+    range_xax=(-30, 0),
+    ylim=(0, 0.10),
+    ):
     """
     Plots a normalized histogram comparing DFT truth vs NN predictions.
     """
@@ -68,7 +73,7 @@ def energy_histogram_comparison(
 
     ax.set_xlabel("Energy (mHartree)", fontsize=14)
     ax.set_ylabel("Normalized Frequency", fontsize=14)
-    ax.set_ylim(0, 0.10)
+    ax.set_ylim(ylim)
     ax.legend(loc="upper left", frameon=False)
 
     plt.tight_layout()
@@ -77,7 +82,13 @@ def energy_histogram_comparison(
     plt.close()
 
 
-def energy_histogram(y_pred, file_name="energy_histogram.pdf", num_bins=100, range_xax=(-30, 0)):
+def energy_histogram(
+        y_pred, 
+        file_name="energy_histogram.pdf", 
+        num_bins=100, 
+        range_xax=(-30, 0),
+        ylim=(0, 0.25),
+        ):
     """
     Plots a normalized histogram of NN predictions of EDA for MOF systems.
     """
@@ -111,7 +122,7 @@ def energy_histogram(y_pred, file_name="energy_histogram.pdf", num_bins=100, ran
 
     ax.set_xlabel("Energy (mHartree)", fontsize=14)
     ax.set_ylabel("Normalized Frequency", fontsize=14)
-    ax.set_ylim(0, 0.25)
+    ax.set_ylim(ylim)
     ax.legend(loc="upper left", frameon=False)
 
     plt.tight_layout()
@@ -120,7 +131,7 @@ def energy_histogram(y_pred, file_name="energy_histogram.pdf", num_bins=100, ran
     plt.close()
 
 
-def correlation_plot(qq_true, qq_pred, file_name="correlation.png"):
+def correlation_plot(qq_true, qq_pred, file_name="correlation.png", xylim=(-30, 0.5)):
     """Evaluates the model on the full dataset and generates a correlation plot."""
 
     print("Minimum predicted energy:", qq_pred.min())
@@ -145,8 +156,8 @@ def correlation_plot(qq_true, qq_pred, file_name="correlation.png"):
     )
     plt.plot(qq_true, qq_true, linestyle="-", color="#d62728", label="y=x")
 
-    plt.xlim(-30, 0.5)
-    plt.ylim(-30, 0.5)
+    plt.xlim(xylim)
+    plt.ylim(xylim)
 
     plt.xlabel("DFT energy (mHartree)", fontsize=22)
     plt.ylabel("NN energy (mHartree)", fontsize=22)
@@ -185,8 +196,6 @@ def loss_plot(train_losses, valid_losses, file_name="tv_loss.pdf"):
 
     plt.xlabel("Epochs", fontsize=22)
     plt.ylabel("Loss", fontsize=22)
-    # plt.ylim(1e-2, 5e-1)
-    # plt.xlim(-10, 360)
     plt.tick_params(axis="both", which="major", labelsize=18)
     plt.legend(loc="upper right", frameon=False, fontsize=18)
     # plt.grid(True)
