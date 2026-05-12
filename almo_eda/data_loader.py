@@ -7,7 +7,9 @@ from sklearn.preprocessing import StandardScaler
 from multiprocessing import Pool
 from almo_eda.utils import time_research_task
 from almo_eda.visualization import energy_histogram
+from almo_eda.logger import get_logger
 
+logger = get_logger(__name__)
 
 class AtomisticDataset(Dataset):
     def __init__(self, features, energies):
@@ -27,7 +29,7 @@ def load_features(file_path):
     try:
         return np.load(file_path)
     except Exception as e:
-        print(f"Error loading file: {file_path}, Error: {e}")
+        logger.error(f"Error loading file: {file_path}, Error: {e}")
         return None
 
 
@@ -38,7 +40,7 @@ def load_energy_data(file_path):
             lines = f.readlines()
         return np.array([[float(val) * 1000 for val in line.split()[1:6]] for line in lines])
     except Exception as e:
-        print(f"Error reading energy file: {file_path}, Error: {e}")
+        logger.error(f"Error reading energy file: {file_path}, Error: {e}")
         return None
 
 
