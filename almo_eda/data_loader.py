@@ -119,7 +119,7 @@ def data_loader(
     print("Feature shape:", features_allox.shape)
 
     # Reshape features
-    features_allo_reshaped = features_allox.reshape(valid_count * n_samples, n_features)
+    features_allo_reshaped = features_allox[:valid_count].reshape(valid_count * n_samples, n_features)
     print("Feature reshaped:", features_allo_reshaped.shape)
 
     # Load Energy Data (Donor/Acceptor)
@@ -141,17 +141,17 @@ def data_loader(
     data_out_accep = np.zeros((valid_count, n_samples, 5))
     data_out_donor = np.zeros((valid_count, n_samples, 5))
 
-    valid_count = 0
+    valid_count_energy = 0
     for i, (a_data, d_data) in enumerate(zip(acceptor_data, donor_data)):
         if a_data is not None and d_data is not None:
-            data_out_accep[valid_count, : a_data.shape[0], :] = a_data
-            data_out_donor[valid_count, : d_data.shape[0], :] = d_data
-            valid_count += 1
+            data_out_accep[valid_count_energy, : a_data.shape[0], :] = a_data
+            data_out_donor[valid_count_energy, : d_data.shape[0], :] = d_data
+            valid_count_energy += 1
 
     print("Energy shape:", data_out_accep.shape, data_out_donor.shape)
     # Reshape energy data
-    data_out_accep_reshaped = data_out_accep.reshape(valid_count * n_samples, 5)
-    data_out_donor_reshaped = data_out_donor.reshape(valid_count * n_samples, 5)
+    data_out_accep_reshaped = data_out_accep[:valid_count_energy].reshape(valid_count * n_samples, 5)
+    data_out_donor_reshaped = data_out_donor[:valid_count_energy].reshape(valid_count * n_samples, 5)
     print("Energy reshaped:", data_out_accep_reshaped.shape, data_out_donor_reshaped.shape)
 
     if output_type == "donor":
