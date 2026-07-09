@@ -1,4 +1,5 @@
 import os
+import pickle
 import numpy as np
 import torch
 from torch.utils.data import Dataset
@@ -50,7 +51,7 @@ def data_loader(
     n_snapshots,
     n_samples,
     n_features,
-    mode="train",  # scalar=None,
+    mode="train",
     output_type="donor",
     n_outputs=2,
     start_index=90000,
@@ -59,6 +60,7 @@ def data_loader(
     random_seed=123,
     valid_size=0.2,
     use_multiprocessing=True,
+    scaler_path=None,
 ):
     """
     Unified loader for both Training and Post-Processing.
@@ -205,6 +207,11 @@ def data_loader(
         scaler = StandardScaler().fit(D_tr_raw)
         D_train = scaler.transform(D_tr_raw)
         D_valid = scaler.transform(D_va_raw)
+        
+        if scaler_path is not None:
+            with open(scaler_path, "wb") as f:
+                pickle.dump(scaler, f)
+            logger.info(f"Scaler saved to {scaler_path}")
 
         print(
             f"Shapes -> D_train: {D_train.shape}, D_valid: {D_valid.shape}, E_train: {E_train.shape}, E_valid: {E_valid.shape}"
@@ -215,18 +222,15 @@ def data_loader(
             torch.Tensor(D_valid),
             torch.Tensor(E_train),
             torch.Tensor(E_valid),
-        )  # , scaler
+        )
 
     elif mode == "eval":
-        # if scaler is None:
-        #    raise ValueError("You must provide the training scaler for evaluation!")
+        if scaler_path is None:
+            raise ValueError("You must provide the scaler_path for evaluation mode!")
 
-        ## Transform using the SAVED scaler, do NOT .fit()
-        # D_eval = scaler.transform(features_allo_reshaped)
-        # E_eval = data_out_log_donor[:, :kwargs.get('n_outputs', 2)]
+        with open(scaler_path, "rb") as f:
+            scaler = pickle.load(f)
 
-        # Standardize input data
-        scaler = StandardScaler().fit(features_allo_reshaped)
         D_eval = scaler.transform(features_allo_reshaped)
         if output_type == "donor":
             E_eval = data_out_log_donor[:, :n_outputs]
