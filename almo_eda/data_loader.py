@@ -227,7 +227,8 @@ def data_loader(
     elif mode == "eval":
         if scaler_path is None:
             raise ValueError("You must provide the scaler_path for evaluation mode!")
-
+        if not os.path.exists(scaler_path):
+            raise FileNotFoundError(f"Scaler file not found at {scaler_path}. Run training first to generate it.")
         with open(scaler_path, "rb") as f:
             scaler = pickle.load(f)
 
