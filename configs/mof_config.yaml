@@ -4,6 +4,8 @@ data:
   n_snapshots: 100
   n_samples: 72
   n_features: 952
+  scaler_path: "./models/scaler.pkl"
+
 
 model:
   model_path: "./models/best_model_donor.pt"

@@ -249,7 +249,7 @@ def data_loader(
         return torch.Tensor(D_eval), torch.Tensor(E_eval)
 
 
-def data_loader_mof(data_path, sys_typ, n_snapshots, n_samples, n_features):
+def data_loader_mof(data_path, sys_typ, n_snapshots, n_samples, n_features, scaler_path=None):
     """Data loader for predicting of EDA of MOF systems
 
     Parameters:
@@ -258,6 +258,7 @@ def data_loader_mof(data_path, sys_typ, n_snapshots, n_samples, n_features):
     - n_snapshots (int): Number of snapshots (timesteps).
     - n_samples (int): Number of samples per snapshot.
     - n_features (int): Number of feature dimensions.
+    - scaler_path (str): Path of scaler.pkl file
 
     """
     features_list = []
@@ -276,7 +277,14 @@ def data_loader_mof(data_path, sys_typ, n_snapshots, n_samples, n_features):
     D_wmof = features_allo_reshaped[:]
 
     # Standardize input for improved learning; scaling is applied to descriptors
-    scaler = StandardScaler().fit(D_wmof)
+    #scaler = StandardScaler().fit(D_wmof)
+
+    if scaler_path is None:
+        raise ValueError("You must provide the scaler_path for MOF evaluation!")
+    if not os.path.exists(scaler_path):
+        raise FileNotFoundError(f"Scaler file not found at {scaler_path}.")
+    with open(scaler_path, "rb") as f:
+        scaler = pickle.load(f)
     D_pred = scaler.transform(D_wmof)
 
     return torch.Tensor(D_pred)
