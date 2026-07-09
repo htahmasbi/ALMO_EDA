@@ -76,9 +76,7 @@ def train_model(
 class CustomLoss(nn.Module):
     """
     Normalized MSE loss that accounts for the variance of target values.
-
     Loss = MSE / Var(target)
-
     This helps the model adapt to varying scales of energy values.
     """
     def __init__(self):
