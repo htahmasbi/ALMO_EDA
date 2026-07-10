@@ -152,8 +152,8 @@ def data_loader(
 
     print("Energy shape:", data_out_accep.shape, data_out_donor.shape)
     # Reshape energy data
-    data_out_accep_reshaped = data_out_accep[:valid_count_energy].reshape(valid_count * n_samples, 5)
-    data_out_donor_reshaped = data_out_donor[:valid_count_energy].reshape(valid_count * n_samples, 5)
+    data_out_accep_reshaped = data_out_accep[:valid_count_energy].reshape(valid_count_energy * n_samples, 5)
+    data_out_donor_reshaped = data_out_donor[:valid_count_energy].reshape(valid_count_energy * n_samples, 5)
     print("Energy reshaped:", data_out_accep_reshaped.shape, data_out_donor_reshaped.shape)
 
     if output_type == "donor":
