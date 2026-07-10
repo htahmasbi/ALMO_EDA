@@ -150,6 +150,9 @@ def data_loader(
             data_out_donor[valid_count_energy, : d_data.shape[0], :] = d_data
             valid_count_energy += 1
 
+    assert valid_count == valid_count_energy, f"Feature/energy count mismatch:
+    {valid_count} vs {valid_count_energy}"
+    
     print("Energy shape:", data_out_accep.shape, data_out_donor.shape)
     # Reshape energy data
     data_out_accep_reshaped = data_out_accep[:valid_count_energy].reshape(valid_count_energy * n_samples, 5)
@@ -161,6 +164,9 @@ def data_loader(
     else:
         energy_histogram(data_out_accep_reshaped, file_name="output_data_accep.pdf")
 
+    assert np.all(data_out_accep_reshaped < 0), "Acceptor energies must be negative"
+    assert np.all(data_out_donor_reshaped < 0), "Donor energies must be negative"
+    
     # Convert to log scale
     data_out_log_accep = np.log(-data_out_accep_reshaped)
     data_out_log_donor = np.log(-data_out_donor_reshaped)
