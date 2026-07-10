@@ -150,8 +150,8 @@ def data_loader(
             data_out_donor[valid_count_energy, : d_data.shape[0], :] = d_data
             valid_count_energy += 1
 
-    assert valid_count == valid_count_energy, f"Feature/energy count mismatch:
-    {valid_count} vs {valid_count_energy}"
+    assert valid_count == valid_count_energy, f"Feature/energy count 
+    mismatch: {valid_count} vs {valid_count_energy}"
     
     print("Energy shape:", data_out_accep.shape, data_out_donor.shape)
     # Reshape energy data
