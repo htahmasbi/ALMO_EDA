@@ -65,9 +65,12 @@ def hyperparameter_optuna(D_tr, D_val, E_tr, E_val, config, device):
                 model, optimizer, train_loader, valid_loader, criterion, device, epochs
             )
             return valid_losses[-1]  # Return the last epoch's validation loss
-        except Exception as e:
-            logger.error(f"Trial failed: {e}")
+        except RuntimeError as e:
+            logger.warning(f"Trial failed (expected): {e}")
             raise optuna.exceptions.TrialPruned()
+        except Exception as e:
+            logger.error(f"Trial failed unexpectedly: {e}", exc_info=True)
+            raise
 
     # Run the study
     study = optuna.create_study(direction="minimize", sampler=optuna.samplers.TPESampler())
