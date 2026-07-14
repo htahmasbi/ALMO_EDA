@@ -10,7 +10,7 @@ data:
   end_index: 90020
   random_seed: 123
   valid_size: 0.2
-  use_multiprocessing: "True"
+  use_multiprocessing: True
   scaler_path: "./models/scaler.pkl"
 
 model:
