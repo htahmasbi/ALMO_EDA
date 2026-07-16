@@ -63,12 +63,9 @@ def main():
     logger.info(f"MAE:  {mae:.4f} mHartree")
     logger.info(f"RMSE: {rmse:.4f} mHartree")
 
-    return mae, rmse
-
-
 if __name__ == "__main__":
 
     # Check if we are running on GitHub Actions
     is_ci = os.environ.get("GITHUB_ACTIONS") == "true"
     logger.info(f"Running in CI mode: {is_ci}")
-    mae, rmse = main()
+    main()
