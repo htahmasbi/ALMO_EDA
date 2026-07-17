@@ -1,7 +1,6 @@
 import yaml
 import torch
 import numpy as np
-import matplotlib.pyplot as plt
 from almo_eda.visualization import energy_histogram
 from almo_eda.network import FFNet
 from almo_eda.data_loader import data_loader_mof
@@ -12,7 +11,7 @@ logger = get_logger("System Evaluation MOF")
 
 
 def main():
-    logger.info(f"Initializing evaluation for our model")
+    logger.info("Initializing evaluation for our model")
 
     # Load configuration
     with open("configs/mof_config.yaml", "r") as f:

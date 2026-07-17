@@ -1,7 +1,7 @@
 # DScribe: SOAP descriptor
 
 from dscribe.descriptors import SOAP
-from ase.io import read, write
+from ase.io import read
 import numpy as np
 
 

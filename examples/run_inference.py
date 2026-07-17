@@ -13,7 +13,7 @@ logger = get_logger("Evaluation-CI test")
 
 
 def main():
-    logger.info(f"Initializing evaluation for our model")
+    logger.info("Initializing evaluation for our model")
 
     # Load configuration
     with open("configs/inference_config.yaml", "r") as f:

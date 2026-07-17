@@ -11,7 +11,7 @@ logger = get_logger("Training-CI CPU test")
 
 
 def main():
-    logger.info(f"Loading config file...")
+    logger.info("Loading config file...")
 
     # Load configuration
     with open("configs/train_config.yaml", "r") as f:
@@ -20,7 +20,7 @@ def main():
     # Load Data using the data_loader logic
     try:
         D_tr, D_val, E_tr, E_val = data_loader(**config["data"])
-        logger.info(f"Successfully loaded test dataset.")
+        logger.info("Successfully loaded test dataset.")
     except Exception as e:
         logger.error(f"Failed to load data: {e}")
         return
@@ -29,7 +29,7 @@ def main():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
     # Create Datasets and Loaders
-    logger.info(f"Creating train and validation datasets")
+    logger.info("Creating train and validation datasets")
     train_loader = DataLoader(
         AtomisticDataset(D_tr, E_tr), batch_size=config["training"]["batch_size"], shuffle=True
     )
@@ -38,7 +38,7 @@ def main():
     )
 
     # Initialize Model
-    logger.info(f"Initializing model")
+    logger.info("Initializing model")
     model = FFNet(
         input_size=config["data"]["n_features"],
         hidden_layers=config["model"]["hidden_sizes"],
@@ -56,7 +56,7 @@ def main():
     )
 
     # Run Training
-    logger.info(f"Training started")
+    logger.info("Training started")
     train_losses, valid_losses = train_model(
         model,
         optimizer,

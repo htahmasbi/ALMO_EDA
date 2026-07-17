@@ -1,6 +1,5 @@
 import optuna
 import torch
-import torch.nn as nn
 from torch.utils.data import DataLoader
 from almo_eda.network import FFNet
 from almo_eda.trainer import train_model, CustomLoss
